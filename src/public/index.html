@@ -3,208 +3,1043 @@
 
 <head>
   <meta charset="utf-8">
-  <title>JS Bin</title>
+  <title>JINA</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script type="commomjs" src="./tailwind.config.js"></script>
+  <script src="./tailwind.config.js"></script>
+  <script>
+    tailwind.config = {
+      content: ['./**/*.{html,js}'],
+      presets: [],
+      darkMode: 'media', // or 'class'
+      theme: {
+        screens: {
+          sm: '640px',
+          md: '768px',
+          lg: '1024px',
+          xl: '1280px',
+          '2xl': '1536px',
+        },
+        colors: ({ colors }) => ({
+          inherit: colors.inherit,
+          current: colors.current,
+          transparent: colors.transparent,
+          primary: "#9333EA",
+          secondary: "#ff7e33",
+          info: "#0C63E7",
+          black: colors.black,
+          white: colors.white,
+          slate: colors.slate,
+          gray: {
+            50: "#FAFAFC",
+            100: "#E9E9EC",
+            200: "#C6C8CD",
+            300: "#ACAEB6",
+            400: "#92959F",
+            500: "#777C87",
+            600: "#5D6370",
+            700: "#434959",
+            800: "#293041",
+            900: "#0f172a",
+          },
+          zinc: colors.zinc,
+          neutral: colors.neutral,
+          stone: colors.stone,
+          red: colors.red,
+          orange: colors.orange,
+          amber: colors.amber,
+          yellow: colors.yellow,
+          lime: colors.lime,
+          green: colors.green,
+          emerald: colors.emerald,
+          teal: colors.teal,
+          cyan: colors.cyan,
+          sky: colors.sky,
+          blue: colors.blue,
+          indigo: colors.indigo,
+          violet: colors.violet,
+          purple: colors.purple,
+          fuchsia: colors.fuchsia,
+          pink: colors.pink,
+          rose: colors.rose,
+        }),
+        columns: {
+          auto: 'auto',
+          1: '1',
+          2: '2',
+          3: '3',
+          4: '4',
+          5: '5',
+          6: '6',
+          7: '7',
+          8: '8',
+          9: '9',
+          10: '10',
+          11: '11',
+          12: '12',
+          '3xs': '16rem',
+          '2xs': '18rem',
+          xs: '20rem',
+          sm: '24rem',
+          md: '28rem',
+          lg: '32rem',
+          xl: '36rem',
+          '2xl': '42rem',
+          '3xl': '48rem',
+          '4xl': '56rem',
+          '5xl': '64rem',
+          '6xl': '72rem',
+          '7xl': '80rem',
+        },
+        spacing: {
+          px: '1px',
+          0: '0px',
+          0.5: '0.125rem',
+          1: '0.25rem',
+          1.5: '0.375rem',
+          2: '0.5rem',
+          2.5: '0.625rem',
+          3: '0.75rem',
+          3.5: '0.875rem',
+          4: '1rem',
+          5: '1.25rem',
+          6: '1.5rem',
+          7: '1.75rem',
+          8: '2rem',
+          9: '2.25rem',
+          10: '2.5rem',
+          11: '2.75rem',
+          12: '3rem',
+          14: '3.5rem',
+          16: '4rem',
+          20: '5rem',
+          24: '6rem',
+          28: '7rem',
+          32: '8rem',
+          36: '9rem',
+          40: '10rem',
+          44: '11rem',
+          48: '12rem',
+          52: '13rem',
+          56: '14rem',
+          60: '15rem',
+          64: '16rem',
+          72: '18rem',
+          80: '20rem',
+          96: '24rem',
+        },
+        animation: {
+          none: 'none',
+          spin: 'spin 1s linear infinite',
+          ping: 'ping 1s cubic-bezier(0, 0, 0.2, 1) infinite',
+          pulse: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+          bounce: 'bounce 1s infinite',
+        },
+        aspectRatio: {
+          auto: 'auto',
+          square: '1 / 1',
+          video: '16 / 9',
+        },
+        backdropBlur: ({ theme }) => theme('blur'),
+        backdropBrightness: ({ theme }) => theme('brightness'),
+        backdropContrast: ({ theme }) => theme('contrast'),
+        backdropGrayscale: ({ theme }) => theme('grayscale'),
+        backdropHueRotate: ({ theme }) => theme('hueRotate'),
+        backdropInvert: ({ theme }) => theme('invert'),
+        backdropOpacity: ({ theme }) => theme('opacity'),
+        backdropSaturate: ({ theme }) => theme('saturate'),
+        backdropSepia: ({ theme }) => theme('sepia'),
+        backgroundColor: ({ theme }) => theme('colors'),
+        backgroundImage: {
+          none: 'none',
+          'gradient-to-t': 'linear-gradient(to top, var(--tw-gradient-stops))',
+          'gradient-to-tr': 'linear-gradient(to top right, var(--tw-gradient-stops))',
+          'gradient-to-r': 'linear-gradient(to right, var(--tw-gradient-stops))',
+          'gradient-to-br': 'linear-gradient(to bottom right, var(--tw-gradient-stops))',
+          'gradient-to-b': 'linear-gradient(to bottom, var(--tw-gradient-stops))',
+          'gradient-to-bl': 'linear-gradient(to bottom left, var(--tw-gradient-stops))',
+          'gradient-to-l': 'linear-gradient(to left, var(--tw-gradient-stops))',
+          'gradient-to-tl': 'linear-gradient(to top left, var(--tw-gradient-stops))',
+        },
+        backgroundOpacity: ({ theme }) => theme('opacity'),
+        backgroundPosition: {
+          bottom: 'bottom',
+          center: 'center',
+          left: 'left',
+          'left-bottom': 'left bottom',
+          'left-top': 'left top',
+          right: 'right',
+          'right-bottom': 'right bottom',
+          'right-top': 'right top',
+          top: 'top',
+        },
+        backgroundSize: {
+          auto: 'auto',
+          cover: 'cover',
+          contain: 'contain',
+        },
+        blur: {
+          0: '0',
+          none: '0',
+          sm: '4px',
+          DEFAULT: '8px',
+          md: '12px',
+          lg: '16px',
+          xl: '24px',
+          '2xl': '40px',
+          '3xl': '64px',
+        },
+        brightness: {
+          0: '0',
+          50: '.5',
+          75: '.75',
+          90: '.9',
+          95: '.95',
+          100: '1',
+          105: '1.05',
+          110: '1.1',
+          125: '1.25',
+          150: '1.5',
+          200: '2',
+        },
+        borderColor: ({ theme }) => ({
+          ...theme('colors'),
+          DEFAULT: theme('colors.gray.200', 'currentColor'),
+        }),
+        borderOpacity: ({ theme }) => theme('opacity'),
+        borderRadius: {
+          none: '0px',
+          sm: '0.125rem',
+          DEFAULT: '0.25rem',
+          md: '0.375rem',
+          lg: '0.5rem',
+          xl: '0.75rem',
+          '2xl': '1rem',
+          '3xl': '1.5rem',
+          full: '9999px',
+        },
+        borderSpacing: ({ theme }) => ({
+          ...theme('spacing'),
+        }),
+        borderWidth: {
+          DEFAULT: '1px',
+          0: '0px',
+          2: '2px',
+          4: '4px',
+          8: '8px',
+        },
+        boxShadow: {
+          sm: '0 1px 2px 0 rgb(0 0 0 / 0.05)',
+          DEFAULT: '0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)',
+          md: '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
+          lg: '0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)',
+          xl: '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)',
+          '2xl': '0 25px 50px -12px rgb(0 0 0 / 0.25)',
+          inner: 'inset 0 2px 4px 0 rgb(0 0 0 / 0.05)',
+          none: 'none',
+        },
+        boxShadowColor: ({ theme }) => theme('colors'),
+        caretColor: ({ theme }) => theme('colors'),
+        accentColor: ({ theme }) => ({
+          ...theme('colors'),
+          auto: 'auto',
+        }),
+        contrast: {
+          0: '0',
+          50: '.5',
+          75: '.75',
+          100: '1',
+          125: '1.25',
+          150: '1.5',
+          200: '2',
+        },
+        container: {},
+        content: {
+          none: 'none',
+        },
+        cursor: {
+          auto: 'auto',
+          default: 'default',
+          pointer: 'pointer',
+          wait: 'wait',
+          text: 'text',
+          move: 'move',
+          help: 'help',
+          'not-allowed': 'not-allowed',
+          none: 'none',
+          'context-menu': 'context-menu',
+          progress: 'progress',
+          cell: 'cell',
+          crosshair: 'crosshair',
+          'vertical-text': 'vertical-text',
+          alias: 'alias',
+          copy: 'copy',
+          'no-drop': 'no-drop',
+          grab: 'grab',
+          grabbing: 'grabbing',
+          'all-scroll': 'all-scroll',
+          'col-resize': 'col-resize',
+          'row-resize': 'row-resize',
+          'n-resize': 'n-resize',
+          'e-resize': 'e-resize',
+          's-resize': 's-resize',
+          'w-resize': 'w-resize',
+          'ne-resize': 'ne-resize',
+          'nw-resize': 'nw-resize',
+          'se-resize': 'se-resize',
+          'sw-resize': 'sw-resize',
+          'ew-resize': 'ew-resize',
+          'ns-resize': 'ns-resize',
+          'nesw-resize': 'nesw-resize',
+          'nwse-resize': 'nwse-resize',
+          'zoom-in': 'zoom-in',
+          'zoom-out': 'zoom-out',
+        },
+        divideColor: ({ theme }) => theme('borderColor'),
+        divideOpacity: ({ theme }) => theme('borderOpacity'),
+        divideWidth: ({ theme }) => theme('borderWidth'),
+        dropShadow: {
+          sm: '0 1px 1px rgb(0 0 0 / 0.05)',
+          DEFAULT: ['0 1px 2px rgb(0 0 0 / 0.1)', '0 1px 1px rgb(0 0 0 / 0.06)'],
+          md: ['0 4px 3px rgb(0 0 0 / 0.07)', '0 2px 2px rgb(0 0 0 / 0.06)'],
+          lg: ['0 10px 8px rgb(0 0 0 / 0.04)', '0 4px 3px rgb(0 0 0 / 0.1)'],
+          xl: ['0 20px 13px rgb(0 0 0 / 0.03)', '0 8px 5px rgb(0 0 0 / 0.08)'],
+          '2xl': '0 25px 25px rgb(0 0 0 / 0.15)',
+          none: '0 0 #0000',
+        },
+        fill: ({ theme }) => theme('colors'),
+        grayscale: {
+          0: '0',
+          DEFAULT: '100%',
+        },
+        hueRotate: {
+          0: '0deg',
+          15: '15deg',
+          30: '30deg',
+          60: '60deg',
+          90: '90deg',
+          180: '180deg',
+        },
+        invert: {
+          0: '0',
+          DEFAULT: '100%',
+        },
+        flex: {
+          1: '1 1 0%',
+          auto: '1 1 auto',
+          initial: '0 1 auto',
+          none: 'none',
+        },
+        flexBasis: ({ theme }) => ({
+          auto: 'auto',
+          ...theme('spacing'),
+          '1/2': '50%',
+          '1/3': '33.333333%',
+          '2/3': '66.666667%',
+          '1/4': '25%',
+          '2/4': '50%',
+          '3/4': '75%',
+          '1/5': '20%',
+          '2/5': '40%',
+          '3/5': '60%',
+          '4/5': '80%',
+          '1/6': '16.666667%',
+          '2/6': '33.333333%',
+          '3/6': '50%',
+          '4/6': '66.666667%',
+          '5/6': '83.333333%',
+          '1/12': '8.333333%',
+          '2/12': '16.666667%',
+          '3/12': '25%',
+          '4/12': '33.333333%',
+          '5/12': '41.666667%',
+          '6/12': '50%',
+          '7/12': '58.333333%',
+          '8/12': '66.666667%',
+          '9/12': '75%',
+          '10/12': '83.333333%',
+          '11/12': '91.666667%',
+          full: '100%',
+        }),
+        flexGrow: {
+          0: '0',
+          DEFAULT: '1',
+        },
+        flexShrink: {
+          0: '0',
+          DEFAULT: '1',
+        },
+        fontFamily: {
+          sans: [
+            'ui-sans-serif',
+            'system-ui',
+            '-apple-system',
+            'BlinkMacSystemFont',
+            '"Segoe UI"',
+            'Roboto',
+            '"Helvetica Neue"',
+            'Arial',
+            '"Noto Sans"',
+            'sans-serif',
+            '"Apple Color Emoji"',
+            '"Segoe UI Emoji"',
+            '"Segoe UI Symbol"',
+            '"Noto Color Emoji"',
+          ],
+          serif: ['ui-serif', 'Georgia', 'Cambria', '"Times New Roman"', 'Times', 'serif'],
+          mono: [
+            'ui-monospace',
+            'SFMono-Regular',
+            'Menlo',
+            'Monaco',
+            'Consolas',
+            '"Liberation Mono"',
+            '"Courier New"',
+            'monospace',
+          ],
+        },
+        fontSize: {
+          xs: ['0.75rem', { lineHeight: '1rem' }],
+          sm: ['0.875rem', { lineHeight: '1.25rem' }],
+          base: ['1rem', { lineHeight: '1.5rem' }],
+          lg: ['1.125rem', { lineHeight: '1.75rem' }],
+          xl: ['1.25rem', { lineHeight: '1.75rem' }],
+          '2xl': ['1.5rem', { lineHeight: '2rem' }],
+          '3xl': ['1.875rem', { lineHeight: '2.25rem' }],
+          '4xl': ['2.25rem', { lineHeight: '2.5rem' }],
+          '5xl': ['3rem', { lineHeight: '1' }],
+          '6xl': ['3.75rem', { lineHeight: '1' }],
+          '7xl': ['4.5rem', { lineHeight: '1' }],
+          '8xl': ['6rem', { lineHeight: '1' }],
+          '9xl': ['8rem', { lineHeight: '1' }],
+        },
+        fontWeight: {
+          thin: '100',
+          extralight: '200',
+          light: '300',
+          normal: '400',
+          medium: '500',
+          semibold: '600',
+          bold: '700',
+          extrabold: '800',
+          black: '900',
+        },
+        gap: ({ theme }) => theme('spacing'),
+        gradientColorStops: ({ theme }) => theme('colors'),
+        gridAutoColumns: {
+          auto: 'auto',
+          min: 'min-content',
+          max: 'max-content',
+          fr: 'minmax(0, 1fr)',
+        },
+        gridAutoRows: {
+          auto: 'auto',
+          min: 'min-content',
+          max: 'max-content',
+          fr: 'minmax(0, 1fr)',
+        },
+        gridColumn: {
+          auto: 'auto',
+          'span-1': 'span 1 / span 1',
+          'span-2': 'span 2 / span 2',
+          'span-3': 'span 3 / span 3',
+          'span-4': 'span 4 / span 4',
+          'span-5': 'span 5 / span 5',
+          'span-6': 'span 6 / span 6',
+          'span-7': 'span 7 / span 7',
+          'span-8': 'span 8 / span 8',
+          'span-9': 'span 9 / span 9',
+          'span-10': 'span 10 / span 10',
+          'span-11': 'span 11 / span 11',
+          'span-12': 'span 12 / span 12',
+          'span-full': '1 / -1',
+        },
+        gridColumnEnd: {
+          auto: 'auto',
+          1: '1',
+          2: '2',
+          3: '3',
+          4: '4',
+          5: '5',
+          6: '6',
+          7: '7',
+          8: '8',
+          9: '9',
+          10: '10',
+          11: '11',
+          12: '12',
+          13: '13',
+        },
+        gridColumnStart: {
+          auto: 'auto',
+          1: '1',
+          2: '2',
+          3: '3',
+          4: '4',
+          5: '5',
+          6: '6',
+          7: '7',
+          8: '8',
+          9: '9',
+          10: '10',
+          11: '11',
+          12: '12',
+          13: '13',
+        },
+        gridRow: {
+          auto: 'auto',
+          'span-1': 'span 1 / span 1',
+          'span-2': 'span 2 / span 2',
+          'span-3': 'span 3 / span 3',
+          'span-4': 'span 4 / span 4',
+          'span-5': 'span 5 / span 5',
+          'span-6': 'span 6 / span 6',
+          'span-full': '1 / -1',
+        },
+        gridRowStart: {
+          auto: 'auto',
+          1: '1',
+          2: '2',
+          3: '3',
+          4: '4',
+          5: '5',
+          6: '6',
+          7: '7',
+        },
+        gridRowEnd: {
+          auto: 'auto',
+          1: '1',
+          2: '2',
+          3: '3',
+          4: '4',
+          5: '5',
+          6: '6',
+          7: '7',
+        },
+        gridTemplateColumns: {
+          none: 'none',
+          1: 'repeat(1, minmax(0, 1fr))',
+          2: 'repeat(2, minmax(0, 1fr))',
+          3: 'repeat(3, minmax(0, 1fr))',
+          4: 'repeat(4, minmax(0, 1fr))',
+          5: 'repeat(5, minmax(0, 1fr))',
+          6: 'repeat(6, minmax(0, 1fr))',
+          7: 'repeat(7, minmax(0, 1fr))',
+          8: 'repeat(8, minmax(0, 1fr))',
+          9: 'repeat(9, minmax(0, 1fr))',
+          10: 'repeat(10, minmax(0, 1fr))',
+          11: 'repeat(11, minmax(0, 1fr))',
+          12: 'repeat(12, minmax(0, 1fr))',
+        },
+        gridTemplateRows: {
+          none: 'none',
+          1: 'repeat(1, minmax(0, 1fr))',
+          2: 'repeat(2, minmax(0, 1fr))',
+          3: 'repeat(3, minmax(0, 1fr))',
+          4: 'repeat(4, minmax(0, 1fr))',
+          5: 'repeat(5, minmax(0, 1fr))',
+          6: 'repeat(6, minmax(0, 1fr))',
+        },
+        height: ({ theme }) => ({
+          auto: 'auto',
+          ...theme('spacing'),
+          '1/2': '50%',
+          '1/3': '33.333333%',
+          '2/3': '66.666667%',
+          '1/4': '25%',
+          '2/4': '50%',
+          '3/4': '75%',
+          '1/5': '20%',
+          '2/5': '40%',
+          '3/5': '60%',
+          '4/5': '80%',
+          '1/6': '16.666667%',
+          '2/6': '33.333333%',
+          '3/6': '50%',
+          '4/6': '66.666667%',
+          '5/6': '83.333333%',
+          full: '100%',
+          screen: '100vh',
+          min: 'min-content',
+          max: 'max-content',
+          fit: 'fit-content',
+        }),
+        inset: ({ theme }) => ({
+          auto: 'auto',
+          ...theme('spacing'),
+          '1/2': '50%',
+          '1/3': '33.333333%',
+          '2/3': '66.666667%',
+          '1/4': '25%',
+          '2/4': '50%',
+          '3/4': '75%',
+          full: '100%',
+        }),
+        keyframes: {
+          spin: {
+            to: {
+              transform: 'rotate(360deg)',
+            },
+          },
+          ping: {
+            '75%, 100%': {
+              transform: 'scale(2)',
+              opacity: '0',
+            },
+          },
+          pulse: {
+            '50%': {
+              opacity: '.5',
+            },
+          },
+          bounce: {
+            '0%, 100%': {
+              transform: 'translateY(-25%)',
+              animationTimingFunction: 'cubic-bezier(0.8,0,1,1)',
+            },
+            '50%': {
+              transform: 'none',
+              animationTimingFunction: 'cubic-bezier(0,0,0.2,1)',
+            },
+          },
+        },
+        letterSpacing: {
+          tighter: '-0.05em',
+          tight: '-0.025em',
+          normal: '0em',
+          wide: '0.025em',
+          wider: '0.05em',
+          widest: '0.1em',
+        },
+        lineHeight: {
+          none: '1',
+          tight: '1.25',
+          snug: '1.375',
+          normal: '1.5',
+          relaxed: '1.625',
+          loose: '2',
+          3: '.75rem',
+          4: '1rem',
+          5: '1.25rem',
+          6: '1.5rem',
+          7: '1.75rem',
+          8: '2rem',
+          9: '2.25rem',
+          10: '2.5rem',
+        },
+        listStyleType: {
+          none: 'none',
+          disc: 'disc',
+          decimal: 'decimal',
+        },
+        margin: ({ theme }) => ({
+          auto: 'auto',
+          ...theme('spacing'),
+        }),
+        maxHeight: ({ theme }) => ({
+          ...theme('spacing'),
+          full: '100%',
+          screen: '100vh',
+          min: 'min-content',
+          max: 'max-content',
+          fit: 'fit-content',
+        }),
+        maxWidth: ({ theme, breakpoints }) => ({
+          none: 'none',
+          0: '0rem',
+          xs: '20rem',
+          sm: '24rem',
+          md: '28rem',
+          lg: '32rem',
+          xl: '36rem',
+          '2xl': '42rem',
+          '3xl': '48rem',
+          '4xl': '56rem',
+          '5xl': '64rem',
+          '6xl': '72rem',
+          '7xl': '80rem',
+          full: '100%',
+          min: 'min-content',
+          max: 'max-content',
+          fit: 'fit-content',
+          prose: '65ch',
+          ...breakpoints(theme('screens')),
+        }),
+        minHeight: {
+          0: '0px',
+          full: '100%',
+          screen: '100vh',
+          min: 'min-content',
+          max: 'max-content',
+          fit: 'fit-content',
+        },
+        minWidth: {
+          0: '0px',
+          full: '100%',
+          min: 'min-content',
+          max: 'max-content',
+          fit: 'fit-content',
+        },
+        objectPosition: {
+          bottom: 'bottom',
+          center: 'center',
+          left: 'left',
+          'left-bottom': 'left bottom',
+          'left-top': 'left top',
+          right: 'right',
+          'right-bottom': 'right bottom',
+          'right-top': 'right top',
+          top: 'top',
+        },
+        opacity: {
+          0: '0',
+          5: '0.05',
+          10: '0.1',
+          20: '0.2',
+          25: '0.25',
+          30: '0.3',
+          40: '0.4',
+          50: '0.5',
+          60: '0.6',
+          70: '0.7',
+          75: '0.75',
+          80: '0.8',
+          90: '0.9',
+          95: '0.95',
+          100: '1',
+        },
+        order: {
+          first: '-9999',
+          last: '9999',
+          none: '0',
+          1: '1',
+          2: '2',
+          3: '3',
+          4: '4',
+          5: '5',
+          6: '6',
+          7: '7',
+          8: '8',
+          9: '9',
+          10: '10',
+          11: '11',
+          12: '12',
+        },
+        padding: ({ theme }) => theme('spacing'),
+        placeholderColor: ({ theme }) => theme('colors'),
+        placeholderOpacity: ({ theme }) => theme('opacity'),
+        outlineColor: ({ theme }) => theme('colors'),
+        outlineOffset: {
+          0: '0px',
+          1: '1px',
+          2: '2px',
+          4: '4px',
+          8: '8px',
+        },
+        outlineWidth: {
+          0: '0px',
+          1: '1px',
+          2: '2px',
+          4: '4px',
+          8: '8px',
+        },
+        ringColor: ({ theme }) => ({
+          DEFAULT: theme(`colors.blue.500`, '#3b82f6'),
+          ...theme('colors'),
+        }),
+        ringOffsetColor: ({ theme }) => theme('colors'),
+        ringOffsetWidth: {
+          0: '0px',
+          1: '1px',
+          2: '2px',
+          4: '4px',
+          8: '8px',
+        },
+        ringOpacity: ({ theme }) => ({
+          DEFAULT: '0.5',
+          ...theme('opacity'),
+        }),
+        ringWidth: {
+          DEFAULT: '3px',
+          0: '0px',
+          1: '1px',
+          2: '2px',
+          4: '4px',
+          8: '8px',
+        },
+        rotate: {
+          0: '0deg',
+          1: '1deg',
+          2: '2deg',
+          3: '3deg',
+          6: '6deg',
+          12: '12deg',
+          45: '45deg',
+          90: '90deg',
+          180: '180deg',
+        },
+        saturate: {
+          0: '0',
+          50: '.5',
+          100: '1',
+          150: '1.5',
+          200: '2',
+        },
+        scale: {
+          0: '0',
+          50: '.5',
+          75: '.75',
+          90: '.9',
+          95: '.95',
+          100: '1',
+          105: '1.05',
+          110: '1.1',
+          125: '1.25',
+          150: '1.5',
+        },
+        scrollMargin: ({ theme }) => ({
+          ...theme('spacing'),
+        }),
+        scrollPadding: ({ theme }) => theme('spacing'),
+        sepia: {
+          0: '0',
+          DEFAULT: '100%',
+        },
+        skew: {
+          0: '0deg',
+          1: '1deg',
+          2: '2deg',
+          3: '3deg',
+          6: '6deg',
+          12: '12deg',
+        },
+        space: ({ theme }) => ({
+          ...theme('spacing'),
+        }),
+        stroke: ({ theme }) => theme('colors'),
+        strokeWidth: {
+          0: '0',
+          1: '1',
+          2: '2',
+        },
+        textColor: ({ theme }) => theme('colors'),
+        textDecorationColor: ({ theme }) => theme('colors'),
+        textDecorationThickness: {
+          auto: 'auto',
+          'from-font': 'from-font',
+          0: '0px',
+          1: '1px',
+          2: '2px',
+          4: '4px',
+          8: '8px',
+        },
+        textUnderlineOffset: {
+          auto: 'auto',
+          0: '0px',
+          1: '1px',
+          2: '2px',
+          4: '4px',
+          8: '8px',
+        },
+        textIndent: ({ theme }) => ({
+          ...theme('spacing'),
+        }),
+        textOpacity: ({ theme }) => theme('opacity'),
+        transformOrigin: {
+          center: 'center',
+          top: 'top',
+          'top-right': 'top right',
+          right: 'right',
+          'bottom-right': 'bottom right',
+          bottom: 'bottom',
+          'bottom-left': 'bottom left',
+          left: 'left',
+          'top-left': 'top left',
+        },
+        transitionDelay: {
+          75: '75ms',
+          100: '100ms',
+          150: '150ms',
+          200: '200ms',
+          300: '300ms',
+          500: '500ms',
+          700: '700ms',
+          1000: '1000ms',
+        },
+        transitionDuration: {
+          DEFAULT: '150ms',
+          75: '75ms',
+          100: '100ms',
+          150: '150ms',
+          200: '200ms',
+          300: '300ms',
+          500: '500ms',
+          700: '700ms',
+          1000: '1000ms',
+        },
+        transitionProperty: {
+          none: 'none',
+          all: 'all',
+          DEFAULT:
+            'color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter',
+          colors: 'color, background-color, border-color, text-decoration-color, fill, stroke',
+          opacity: 'opacity',
+          shadow: 'box-shadow',
+          transform: 'transform',
+        },
+        transitionTimingFunction: {
+          DEFAULT: 'cubic-bezier(0.4, 0, 0.2, 1)',
+          linear: 'linear',
+          in: 'cubic-bezier(0.4, 0, 1, 1)',
+          out: 'cubic-bezier(0, 0, 0.2, 1)',
+          'in-out': 'cubic-bezier(0.4, 0, 0.2, 1)',
+        },
+        translate: ({ theme }) => ({
+          ...theme('spacing'),
+          '1/2': '50%',
+          '1/3': '33.333333%',
+          '2/3': '66.666667%',
+          '1/4': '25%',
+          '2/4': '50%',
+          '3/4': '75%',
+          full: '100%',
+        }),
+        width: ({ theme }) => ({
+          auto: 'auto',
+          ...theme('spacing'),
+          '1/2': '50%',
+          '1/3': '33.333333%',
+          '2/3': '66.666667%',
+          '1/4': '25%',
+          '2/4': '50%',
+          '3/4': '75%',
+          '1/5': '20%',
+          '2/5': '40%',
+          '3/5': '60%',
+          '4/5': '80%',
+          '1/6': '16.666667%',
+          '2/6': '33.333333%',
+          '3/6': '50%',
+          '4/6': '66.666667%',
+          '5/6': '83.333333%',
+          '1/12': '8.333333%',
+          '2/12': '16.666667%',
+          '3/12': '25%',
+          '4/12': '33.333333%',
+          '5/12': '41.666667%',
+          '6/12': '50%',
+          '7/12': '58.333333%',
+          '8/12': '66.666667%',
+          '9/12': '75%',
+          '10/12': '83.333333%',
+          '11/12': '91.666667%',
+          full: '100%',
+          screen: '100vw',
+          min: 'min-content',
+          max: 'max-content',
+          fit: 'fit-content',
+        }),
+        willChange: {
+          auto: 'auto',
+          scroll: 'scroll-position',
+          contents: 'contents',
+          transform: 'transform',
+        },
+        zIndex: {
+          auto: 'auto',
+          0: '0',
+          10: '10',
+          20: '20',
+          30: '30',
+          40: '40',
+          50: '50',
+        },
+      },
+      variantOrder: [
+        'first',
+        'last',
+        'odd',
+        'even',
+        'visited',
+        'checked',
+        'empty',
+        'read-only',
+        'group-hover',
+        'group-focus',
+        'focus-within',
+        'hover',
+        'focus',
+        'focus-visible',
+        'active',
+        'disabled',
+      ],
+      plugins: [],
+    }
+  </script>
   <!-- <script src="https://raw.githack.com/SortableJS/Sortable/master/Sortable.js"></script> -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.2/Sortable.min.js"
     integrity="sha512-TelkP3PCMJv+viMWynjKcvLsQzx6dJHvIGhfqzFtZKgAjKM1YPqcwzzDEoTc/BHjf43PcPzTQOjuTr4YdE8lNQ=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <style>
 
-  </style>
 </head>
 
-<body>
-  <div id="accordion-example">
-    <h2 id="accordion-example-heading-1">
-      <button type="button"
-        class="flex items-center justify-between w-full p-5 font-medium rtl:text-right text-gray-500 border border-b-0 border-gray-200 rounded-t-xl focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-800 dark:border-gray-700 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800"
-        aria-expanded="true" aria-controls="accordion-example-body-1">
-        <span>What is Flowbite?</span>
-        <svg data-accordion-icon class="w-6 h-6 rotate-180 shrink-0" fill="currentColor" viewBox="0 0 20 20"
-          xmlns="http://www.w3.org/2000/svg">
-          <path fill-rule="evenodd"
-            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-            clip-rule="evenodd"></path>
-        </svg>
-      </button>
-    </h2>
-    <div id="accordion-example-body-1" class="hidden" aria-labelledby="accordion-example-heading-1">
-      <div class="p-5 border border-b-0 border-gray-200 dark:border-gray-700 dark:bg-gray-900">
-        <p class="mb-2 text-gray-500 dark:text-gray-400">Flowbite is an open-source library of interactive components
-          built on top of Tailwind CSS including buttons, dropdowns, modals, navbars, and more.</p>
-        <p class="text-gray-500 dark:text-gray-400">Check out this guide to learn how to <a
-            href="/docs/getting-started/introduction/" class="text-blue-600 dark:text-blue-500 hover:underline">get
-            started</a> and start developing websites even faster with components on top of Tailwind CSS.</p>
-      </div>
-    </div>
-    <h2 id="accordion-example-heading-2">
-      <button type="button"
-        class="flex items-center justify-between w-full p-5 font-medium rtl:text-right text-gray-500 border border-b-0 border-gray-200 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-800 dark:border-gray-700 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800"
-        aria-expanded="false" aria-controls="accordion-example-body-2">
-        <span>Is there a Figma file available?</span>
-        <svg data-accordion-icon class="w-6 h-6 shrink-0" fill="currentColor" viewBox="0 0 20 20"
-          xmlns="http://www.w3.org/2000/svg">
-          <path fill-rule="evenodd"
-            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-            clip-rule="evenodd"></path>
-        </svg>
-      </button>
-    </h2>
-    <div id="accordion-example-body-2" class="hidden" aria-labelledby="accordion-example-heading-2">
-      <div class="p-5 border border-b-0 border-gray-200 dark:border-gray-700">
-        <p class="mb-2 text-gray-500 dark:text-gray-400">Flowbite is first conceptualized and designed using the Figma
-          software so everything you see in the library has a design equivalent in our Figma file.</p>
-        <p class="text-gray-500 dark:text-gray-400">Check out the <a href="https://flowbite.com/figma/"
-            class="text-blue-600 dark:text-blue-500 hover:underline">Figma design system</a> based on the utility
-          classes from Tailwind CSS and components from Flowbite.</p>
-      </div>
-    </div>
-    <h2 id="accordion-example-heading-3">
-      <button type="button"
-        class="flex items-center justify-between w-full p-5 font-medium rtl:text-right text-gray-500 border border-gray-200 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-800 dark:border-gray-700 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800"
-        aria-expanded="false" aria-controls="accordion-example-body-3">
-        <span>What are the differences between Flowbite and Tailwind UI?</span>
-        <svg data-accordion-icon class="w-6 h-6 shrink-0" fill="currentColor" viewBox="0 0 20 20"
-          xmlns="http://www.w3.org/2000/svg">
-          <path fill-rule="evenodd"
-            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-            clip-rule="evenodd"></path>
-        </svg>
-      </button>
-    </h2>
-    <div id="accordion-example-body-3" class="hidden" aria-labelledby="accordion-example-heading-3">
-      <div class="p-5 border border-t-0 border-gray-200 dark:border-gray-700">
-        <p class="mb-2 text-gray-500 dark:text-gray-400">The main difference is that the core components from Flowbite
-          are open source under the MIT license, whereas Tailwind UI is a paid product. Another difference is that
-          Flowbite relies on smaller and standalone components, whereas Tailwind UI offers sections of pages.</p>
-        <p class="mb-2 text-gray-500 dark:text-gray-400">However, we actually recommend using both Flowbite, Flowbite
-          Pro, and even Tailwind UI as there is no technical reason stopping you from using the best of two worlds.</p>
-        <p class="mb-2 text-gray-500 dark:text-gray-400">Learn more about these technologies:</p>
-        <ul class="ps-5 text-gray-500 list-disc dark:text-gray-400">
-          <li><a href="https://flowbite.com/pro/" class="text-blue-600 dark:text-blue-500 hover:underline">Flowbite
-              Pro</a></li>
-          <li><a href="https://tailwindui.com/" rel="nofollow"
-              class="text-blue-600 dark:text-blue-500 hover:underline">Tailwind UI</a></li>
-        </ul>
-      </div>
-    </div>
-  </div>
-
-  </div>
-  <div id="columns" class="row" style="display: flex;">
-
-  </div>
-  <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.js"></script>
-  <script type="module" src="./assets/icons/index.js"></script>
-  <script type="module">
-    const accordionElement = document.getElementById('accordion-example');
-
-    // create an array of objects with the id, trigger element (eg. button), and the content element
-    const accordionItems = [
-      {
-        id: 'accordion-example-heading-1',
-        triggerEl: document.querySelector('#accordion-example-heading-1'),
-        targetEl: document.querySelector('#accordion-example-body-1'),
-        active: false
-      },
-      {
-        id: 'accordion-example-heading-2',
-        triggerEl: document.querySelector('#accordion-example-heading-2'),
-        targetEl: document.querySelector('#accordion-example-body-2'),
-        active: false
-      },
-      {
-        id: 'accordion-example-heading-3',
-        triggerEl: document.querySelector('#accordion-example-heading-3'),
-        targetEl: document.querySelector('#accordion-example-body-3'),
-        active: false
-      }
-    ];
-
-    // options with default values
-    const options = {
-      alwaysOpen: true,
-      activeClasses: 'bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white',
-      inactiveClasses: 'text-gray-500 dark:text-gray-400',
-      onOpen: (item) => {
-        console.log('accordion item has been shown');
-        console.log(item);
-      },
-      onClose: (item) => {
-        console.log('accordion item has been hidden');
-        console.log(item);
-      },
-      onToggle: (item) => {
-        console.log('accordion item has been toggled');
-        console.log(item);
-      },
-    };
-
-    // instance options object
-    const instanceOptions = {
-      id: 'accordion-example',
-      override: true
-    };
-    const accordion = new Accordion(accordionElement, accordionItems, options, instanceOptions);
-    [{
-      id: 0,
-      cards: [
-        { data: "0" },
-      ]
-    },
-    {
-      id: 1,
-      cards: [
-        { data: "1" },
-      ]
-    }, {
-      id: 2,
-      cards: [
-        { data: "2" },
-      ]
-    }
-    ].forEach(c => {
-      const col = document.createElement("div")
-      col.className = "w-full"
-      col.innerHTML = `
- 
-
-
-      <div class="border m-1 p-2">
-         <div class="flex gap-1 items-center mb-6">
-          <svg class="handle size-6 text-slate-200 hover:text-slate-700" xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-arrows-move"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M18 9l3 3l-3 3" /><path d="M15 12h6" /><path d="M6 9l-3 3l3 3" /><path d="M3 12h6" /><path d="M9 18l3 3l3 -3" /><path d="M12 15v6" /><path d="M15 6l-3 -3l-3 3" /><path d="M12 3v6" /></svg>
-        <div class="flex-1 text-center">
-          <span class="badge">14</span>
-          Drag me by the handle
-        </div>
-        </div>
-              <div id="simpleList" class="list-group">
-
-          ${c.cards.reduce((acc, cur) => acc + `<!-- Simple List -->
-            <div class="border m-1 p-2 flex gap-1 justify-center items-center">${cur.data}</div>
-            `, "")
-        }
-            <div>
-              <button></button>
+<body class="bg-white dark:bg-gray-900">
+  <!-- <AppHeader /> -->
+  <header>
+    <nav class="absolute z-10 w-full border-b border-black/5 dark:border-white/5 lg:border-transparent">
+      <!-- <Container> -->
+      <div class="max-w-7xl mx-auto px-6 md:px-12 xl:px-6">
+        <div class="relative flex flex-wrap items-center justify-between gap-6 py-3 md:gap-0 md:py-4">
+          <div class="relative z-20 flex justify-between md:px-0 lg:w-max">
+            <a href="/#home" aria-label="logo" class="flex items-center space-x-2">
+              <div aria-hidden="true" class="flex space-x-1">
+                <div class="h-4 w-4 rounded-full bg-gray-900 dark:bg-white"></div>
+                <div class="h-6 w-2 bg-primary"></div>
               </div>
+              <span class="text-2xl font-bold text-gray-900 dark:text-white">JINA</span>
+            </a>
+
           </div>
+          <div class="relative flex max-h-10">
+            <a href="/register"
+              class="relative flex h-9 w-full items-center justify-center px-4 before:absolute before:inset-0 before:rounded-full before:bg-primary before:transition before:duration-300 hover:before:scale-105 active:duration-75 active:before:scale-95 sm:w-max">
+              <span class="relative text-sm font-semibold text-white"> Get Started</span>
+            </a>
+          </div>
+        </div>
       </div>
-      `;
-      columns.appendChild(col)
-    })
-    document.querySelectorAll(".list-group").forEach((ls) => {
-      Sortable.create(ls, {
-        group: "shared",
-        animation: 150
-      });
-    })
-    Sortable.create(columns, {
-      handle: '.handle',
-      animation: 150
-    });
-  </script>
+    </nav>
+  </header>
+
+  <main class="space-y-40 h-screen place-content-center">
+    <!-- <HeroSection /> -->
+    <div class="relative" id="home">
+      <div aria-hidden="true" class="absolute inset-0 grid grid-cols-2 -space-x-52 opacity-40 dark:opacity-20">
+        <div class="blur-[106px] h-56 bg-gradient-to-br from-primary to-purple-400 dark:from-blue-700"></div>
+        <div class="blur-[106px] h-32 bg-gradient-to-r from-cyan-400 to-sky-300 dark:to-indigo-600"></div>
+      </div>
+      <!-- <Container> -->
+      <div class="max-w-7xl mx-auto px-6 md:px-12 xl:px-6">
+        <div class="relative pt-36 ml-auto">
+          <div class="lg:w-2/3 text-center mx-auto">
+            <h1 class="text-gray-900 dark:text-white font-bold text-5xl md:text-6xl xl:text-7xl">JINA helps team move
+              <span class="text-primary dark:text-white">work forward.</span>
+            </h1>
+            <p class="mt-8 text-gray-700 dark:text-gray-300">Collaborate, manage projects, and reach new productivity
+              peaks. From
+              high rises to the home office, the way your team works is unique -
+              accomplish it all with JINA</p>
+            <div class="mt-16 flex flex-wrap justify-center gap-y-4 gap-x-6">
+              <a href="#"
+                class="relative flex h-11 w-full items-center justify-center px-6 before:absolute before:inset-0 before:rounded-full before:bg-primary before:transition before:duration-300 hover:before:scale-105 active:duration-75 active:before:scale-95 sm:w-max">
+                <span class="relative text-base font-semibold text-white">Get started</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <script type="module" src="./main.js"></script>
 </body>
 
 </html>
