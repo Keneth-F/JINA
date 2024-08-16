@@ -5,8 +5,9 @@ const router = Router()
 
 router.get('/', controller.getAll)
 router.post('/', controller.create)
-router.get('/:id', controller.getById)
-router.delete('/:id', controller.delete)
-router.put('/:id', controller.update)
+router.route('/:id',)
+  .get(controller.getById)
+  .delete(controller.delete)
+  .put(controller.update)
 
 export default router
