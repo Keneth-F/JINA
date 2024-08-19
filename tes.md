@@ -275,3 +275,514 @@ img: "/workflow_5.png",
 color: "bg-[#f99cdb]",
 },
 ];
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+  <style>
+    .ticket-list {
+      height: 300px;
+    }
+  </style>
+</head>
+
+<body>
+  <section id="modal">
+    <h2>Modal</h2>
+    <button class="contrast" data-target="modal-example" onclick="toggleModal(event)">
+      Launch demo modal
+    </button>
+  </section>
+  <dialog id="modal-example">
+    <article>
+      <header>
+        <button aria-label="Close" rel="prev" data-target="modal-example" onclick="toggleModal(event)"></button>
+        <h3>Confirm your action!</h3>
+      </header>
+      <p>
+        Cras sit amet maximus risus. Pellentesque sodales odio sit amet augue finibus
+        pellentesque. Nullam finibus risus non semper euismod.
+      </p>
+      <footer>
+        <button role="button" class="secondary" data-target="modal-example" onclick="toggleModal(event)">
+          Cancel</button><button autofocus data-target="modal-example" onclick="toggleModal(event)">
+          Confirm
+        </button>
+      </footer>
+    </article>
+  </dialog>
+  <form id="ticketForm">
+    <input type="hidden" name="ticketId" value="0">
+    <div>
+      <label for="title">Title:</label>
+      <input type="text" name="title" placeholder="Title" required>
+    </div>
+    <div>
+      <label for="date">Date:</label>
+      <input type="date" name="date" required>
+    </div>
+    <div>
+      <label for="priority">Priority:</label>
+      <select name="priority" required>
+        <option value="high">High</option>
+        <option value="medium">Medium</option>
+        <option value="normal">Normal</option>
+        <option value="low">Low</option>
+      </select>
+    </div>
+    <div>
+      <label for="stage">Stage:</label>
+      <select name="stage" required>
+        <option value="todo">Todo</option>
+        <option value="in progress">In Progress</option>
+        <option value="completed">Completed</option>
+      </select>
+    </div>
+    <div id="teamMembers">
+      <label>Team Members:</label>
+      <button type="button" id="addMemberBtn">Add Team Member</button>
+      <!-- Los miembros del equipo se añadirán aquí -->
+    </div>
+    <div>
+      <button type="submit">Save Ticket</button>
+    </div>
+  </form>
+
+  <hr>
+
+  <div id="columns">
+    <div class="column" data-stage="todo">
+      <h2>Todo</h2>
+      <div class="ticket-list" id="todo"></div>
+    </div>
+    <div class="column" data-stage="in progress">
+      <h2>In Progress</h2>
+      <div class="ticket-list" id="in-progress"></div>
+    </div>
+    <div class="column" data-stage="completed">
+      <h2>Completed</h2>
+      <div class="ticket-list" id="completed"></div>
+    </div>
+  </div>
+  <script>
+    let tickets = [];
+    let nextId = 1;
+
+    document.getElementById('ticketForm').addEventListener('submit', function (event) {
+      event.preventDefault();
+
+      const formData = new FormData(event.target);
+
+      const ticketId = parseInt(formData.get('ticketId'));
+      const title = formData.get('title');
+      const date = formData.get('date');
+      const priority = formData.get('priority');
+      const stage = formData.get('stage');
+
+      const teamMembers = [];
+      document.querySelectorAll('#teamMembers .team-member').forEach(member => {
+        const name = member.querySelector('.teamName').value;
+        const email = member.querySelector('.teamEmail').value;
+        const password = member.querySelector('.teamPassword').value;
+        teamMembers.push({ name, email, password });
+      });
+
+      const ticket = {
+        id: ticketId === 0 ? nextId++ : ticketId,
+        title,
+        date,
+        priority,
+        team: teamMembers,
+        stage
+      };
+
+      if (ticketId === 0) {
+        tickets.push(ticket);
+      } else {
+        const index = tickets.findIndex(t => t.id === ticketId);
+        tickets[index] = ticket;
+      }
+
+      clearForm();
+      renderTickets();
+    });
+
+    function renderTickets() {
+      const stages = ['todo', 'in progress', 'completed'];
+      stages.forEach(stage => {
+        const column = document.getElementById(stage.replace(' ', '-'));
+        column.innerHTML = '';
+        tickets.filter(ticket => ticket.stage === stage).forEach(ticket => {
+          const ticketElement = createTicketElement(ticket);
+          column.appendChild(ticketElement);
+        });
+      });
+    }
+
+    function createTicketElement(ticket) {
+      const ticketDiv = document.createElement('div');
+      ticketDiv.classList.add('ticket');
+      ticketDiv.setAttribute('draggable', true);
+      ticketDiv.dataset.id = ticket.id;
+
+      const teamInfo = ticket.team.map(member => `${member.name} (${member.email})`).join(', ');
+
+      ticketDiv.innerHTML = `
+        <h3>${ticket.title}</h3>
+        <h3>${ticket.stage}</h3>
+        <p>Date: ${ticket.date}</p>
+        <p>Priority: ${ticket.priority}</p>
+        <p>Team: ${teamInfo}</p>
+    `;
+
+      ticketDiv.addEventListener('dragstart', handleDragStart);
+      ticketDiv.addEventListener('dragend', handleDragEnd);
+
+      return ticketDiv;
+    }
+
+    function handleDragStart(event) {
+      event.dataTransfer.setData('text/plain', event.target.dataset.id);
+      event.target.classList.add('dragging');
+    }
+
+    function handleDragEnd(event) {
+      event.target.classList.remove('dragging');
+    }
+
+    function handleDrop(event) {
+      const ticketId = event.dataTransfer.getData('text/plain');
+      const newStage = event.target.closest('.column').dataset.stage;
+
+      const ticket = tickets.find(t => t.id === parseInt(ticketId));
+      ticket.stage = newStage;
+
+      renderTickets();
+    }
+
+    function handleDragOver(event) {
+      event.preventDefault();
+    }
+
+    document.querySelectorAll('.ticket-list').forEach(list => {
+      list.addEventListener('dragover', handleDragOver);
+      list.addEventListener('drop', handleDrop);
+    });
+
+    function clearForm() {
+      const form = document.getElementById('ticketForm');
+      form.reset();
+      form.querySelector('[name="ticketId"]').value = 0;
+
+      document.getElementById('teamMembers').innerHTML = '';
+      addTeamMember();
+    }
+
+    function addTeamMember(name = '', email = '', password = '') {
+      const teamMembersDiv = document.getElementById('teamMembers');
+
+      const memberDiv = document.createElement('div');
+      memberDiv.classList.add('team-member');
+
+      memberDiv.innerHTML = `
+        <input type="text" class="teamName" name="teamName[]" placeholder="Name" value="${name}" required>
+        <input type="email" class="teamEmail" name="teamEmail[]" placeholder="Email" value="${email}" required>
+        <input type="password" class="teamPassword" name="teamPassword[]" placeholder="Password" value="${password}" required>
+        <button type="button" class="removeBtn">Remove</button>
+    `;
+
+      teamMembersDiv.appendChild(memberDiv);
+
+      memberDiv.querySelector('.removeBtn').addEventListener('click', () => removeTeamMember(memberDiv));
+    }
+
+    function removeTeamMember(memberDiv) {
+      memberDiv.remove();
+    }
+
+    document.getElementById('addMemberBtn').addEventListener('click', () => addTeamMember());
+
+
+    /*
+
+- Modal
+-
+- Pico.css - https://picocss.com
+- Copyright 2019-2024 - Licensed under MIT
+  \*/
+
+  // Config
+  const isOpenClass = "modal-is-open";
+  const openingClass = "modal-is-opening";
+  const closingClass = "modal-is-closing";
+  const scrollbarWidthCssVar = "--pico-scrollbar-width";
+  const animationDuration = 400; // ms
+  let visibleModal = null;
+
+  // Toggle modal
+  const toggleModal = (event) => {
+  event.preventDefault();
+  const modal = document.getElementById(event.currentTarget.dataset.target);
+  if (!modal) return;
+  modal && (modal.open ? closeModal(modal) : openModal(modal));
+  };
+
+  // Open modal
+  const openModal = (modal) => {
+  const { documentElement: html } = document;
+  const scrollbarWidth = getScrollbarWidth();
+  if (scrollbarWidth) {
+  html.style.setProperty(scrollbarWidthCssVar, `${scrollbarWidth}px`);
+  }
+  html.classList.add(isOpenClass, openingClass);
+  setTimeout(() => {
+  visibleModal = modal;
+  html.classList.remove(openingClass);
+  }, animationDuration);
+  modal.showModal();
+  };
+
+  // Close modal
+  const closeModal = (modal) => {
+  visibleModal = null;
+  const { documentElement: html } = document;
+  html.classList.add(closingClass);
+  setTimeout(() => {
+  html.classList.remove(closingClass, isOpenClass);
+  html.style.removeProperty(scrollbarWidthCssVar);
+  modal.close();
+  }, animationDuration);
+  };
+
+  // Close with a click outside
+  document.addEventListener("click", (event) => {
+  if (visibleModal === null) return;
+  const modalContent = visibleModal.querySelector("article");
+  const isClickInside = modalContent.contains(event.target);
+  !isClickInside && closeModal(visibleModal);
+  });
+
+  // Close with Esc key
+  document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && visibleModal) {
+  closeModal(visibleModal);
+  }
+  });
+
+  // Get scrollbar width
+  const getScrollbarWidth = () => {
+  const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+  return scrollbarWidth;
+  };
+
+  // Is scrollbar visible
+  const isScrollbarVisible = () => {
+  return document.body.scrollHeight > screen.height;
+  };
+
+  </script>
+</body>
+
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ticket CRUD</title>
+    <link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
+>
+</head>
+<body class="container">
+    <h1>Ticket Management</h1>
+
+    <form id="ticketForm">
+        <input type="hidden" id="ticketId" value="0">
+        <label for="title">Title:</label>
+        <input type="text" id="title" required>
+        <br>
+        <label for="date">Date:</label>
+        <input type="date" id="date" required>
+        <br>
+        <label for="priority">Priority:</label>
+        <select multiple id="priority">
+            <option value="high">High</option>
+            <option value="medium">Medium</option>
+            <option value="normal">Normal</option>
+            <option value="low">Low</option>
+        </select>
+        <br>
+        <label for="stage">Stage:</label>
+        <select id="stage">
+            <option value="todo">To Do</option>
+            <option value="in progress">In Progress</option>
+            <option value="completed">Completed</option>
+        </select>
+        <br>
+        <h3>Team Members</h3>
+        <div id="teamMembers">
+            <div class="team-member">
+                <input type="text" class="teamName" placeholder="Name" required>
+                <input type="email" class="teamEmail" placeholder="Email" required>
+                <input type="password" class="teamPassword" placeholder="Password" required>
+                <button type="button" onclick="removeTeamMember(this)">Remove</button>
+            </div>
+        </div>
+        <button type="button" onclick="addTeamMember()">Add Team Member</button>
+        <br><br>
+        <button type="submit">Save Ticket</button>
+    </form>
+
+    <table id="ticketTable">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Date</th>
+                <th>Priority</th>
+                <th>Team</th>
+                <th>Stage</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Tickets will be dynamically inserted here -->
+        </tbody>
+    </table>
+
+</body>
+</html>
+let tickets = [];
+let nextId = 1;
+
+document.getElementById('ticketForm').addEventListener('submit', function (event) {
+event.preventDefault();
+
+    const ticketId = parseInt(document.getElementById('ticketId').value);
+    const title = document.getElementById('title').value;
+    const date = document.getElementById('date').value;
+    const priority = document.getElementById('priority').value;
+    const stage = document.getElementById('stage').value;
+
+    const teamMembers = [];
+    document.querySelectorAll('#teamMembers .team-member').forEach(member => {
+        const name = member.querySelector('.teamName').value;
+        const email = member.querySelector('.teamEmail').value;
+        const password = member.querySelector('.teamPassword').value;
+        teamMembers.push({ name, email, password });
+    });
+
+    const ticket = {
+        id: ticketId === 0 ? nextId++ : ticketId,
+        title,
+        date,
+        priority,
+        team: teamMembers,
+        stage
+    };
+
+    if (ticketId === 0) {
+        tickets.push(ticket);
+    } else {
+        const index = tickets.findIndex(t => t.id === ticketId);
+        tickets[index] = ticket;
+    }
+
+    clearForm();
+    renderTickets();
+
+});
+
+function renderTickets() {
+const tbody = document.querySelector('#ticketTable tbody');
+tbody.innerHTML = '';
+
+    tickets.forEach(ticket => {
+        const row = document.createElement('tr');
+
+        const teamInfo = ticket.team.map(member => `${member.name} (${member.email})`).join(', ');
+
+        row.innerHTML = `
+            <td>${ticket.id}</td>
+            <td>${ticket.title}</td>
+            <td>${ticket.date}</td>
+            <td>${ticket.priority}</td>
+            <td>${teamInfo}</td>
+            <td>${ticket.stage}</td>
+            <td>
+                <button class="editBtn">Edit</button>
+                <button class="deleteBtn">Delete</button>
+            </td>
+        `;
+
+        tbody.appendChild(row);
+
+        row.querySelector('.editBtn').addEventListener('click', () => editTicket(ticket.id));
+        row.querySelector('.deleteBtn').addEventListener('click', () => deleteTicket(ticket.id));
+    });
+
+}
+
+function editTicket(id) {
+const ticket = tickets.find(t => t.id === id);
+document.getElementById('ticketId').value = ticket.id;
+document.getElementById('title').value = ticket.title;
+document.getElementById('date').value = ticket.date;
+document.getElementById('priority').value = ticket.priority;
+document.getElementById('stage').value = ticket.stage;
+
+    document.getElementById('teamMembers').innerHTML = '';
+
+    ticket.team.forEach(member => {
+        addTeamMember(member.name, member.email, member.password);
+    });
+
+}
+
+function deleteTicket(id) {
+tickets = tickets.filter(t => t.id !== id);
+renderTickets();
+}
+
+function clearForm() {
+document.getElementById('ticketId').value = 0;
+document.getElementById('title').value = '';
+document.getElementById('date').value = '';
+document.getElementById('priority').value = 'high';
+document.getElementById('stage').value = 'todo';
+document.getElementById('teamMembers').innerHTML = '';
+addTeamMember();
+}
+
+function addTeamMember(name = '', email = '', password = '') {
+const teamMembersDiv = document.getElementById('teamMembers');
+
+    const memberDiv = document.createElement('div');
+    memberDiv.classList.add('team-member');
+
+    memberDiv.innerHTML = `
+        <input type="text" class="teamName" placeholder="Name" value="${name}" required>
+        <input type="email" class="teamEmail" placeholder="Email" value="${email}" required>
+        <input type="password" class="teamPassword" placeholder="Password" value="${password}" required>
+        <button type="button" class="removeBtn">Remove</button>
+    `;
+
+    teamMembersDiv.appendChild(memberDiv);
+
+    memberDiv.querySelector('.removeBtn').addEventListener('click', () => removeTeamMember(memberDiv));
+
+}
+
+function removeTeamMember(memberDiv) {
+memberDiv.remove();
+}
+
+document.querySelector('button[onclick="addTeamMember()"]').addEventListener('click', () => addTeamMember());
