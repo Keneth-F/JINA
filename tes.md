@@ -786,3 +786,4 @@ memberDiv.remove();
 }
 
 document.querySelector('button[onclick="addTeamMember()"]').addEventListener('click', () => addTeamMember());
+
