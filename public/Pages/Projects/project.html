@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" type="text/css" />
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.2/Sortable.min.js"
+    integrity="sha512-TelkP3PCMJv+viMWynjKcvLsQzx6dJHvIGhfqzFtZKgAjKM1YPqcwzzDEoTc/BHjf43PcPzTQOjuTr4YdE8lNQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</head>
+
+<body>
+  <div
+    class="flex flex-col w-screen h-screen overflow-auto text-gray-700 bg-gradient-to-tr from-blue-200 via-indigo-200 to-pink-200">
+    <div class="flex items-center flex-shrink-0 w-full h-16 px-10 bg-white bg-opacity-75">
+      <a class="mx-2 text-sm font-semibold text-indigo-700" href="#">Home</a>
+      <input class="flex items-center h-10 px-4 ml-10 text-sm bg-gray-200 rounded-full focus:outline-none focus:ring"
+        type="search" placeholder="Search for anything…">
+      <div class="ml-10">
+        <a class="mx-2 text-sm font-semibold text-indigo-700" href="#">Projects</a>
+        <a class="mx-2 text-sm font-semibold text-gray-600 hover:text-indigo-700" href="#">Team</a>
+        <a class="mx-2 text-sm font-semibold text-gray-600 hover:text-indigo-700" href="#">Activity</a>
+      </div>
+      <div class="dropdown dropdown-end ml-auto">
+        <div tabindex="0" role="button"
+          class="flex items-center justify-center size-12 overflow-hidden rounded-full cursor-pointer">
+          <img
+            src="https://assets.codepen.io/5041378/internal/avatars/users/default.png?fit=crop&format=auto&height=512&version=1600304177&width=512"
+            alt="">
+        </div>
+        <ul tabindex="0" class="menu dropdown-content bg-base-100 rounded-box z-[1] mt-4 w-52 p-2 shadow">
+          <li><a>Item 1</a></li>
+          <li><a>Item 2</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="px-10 mt-6">
+      <h1 class="text-2xl font-bold">Team Project Board</h1>
+    </div>
+    <div id="board-container" class="flex flex-grow px-10 mt-4 space-x-6 overflow-auto">
+
+      <div class="flex-shrink-0 w-6"></div>
+    </div>
+  </div>
+
+
+  <dialog id="modal-create-ticket" class="modal">
+    <div class="modal-box">
+      <form method="dialog">
+        <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+      </form>
+      <form id="ticketForm" class="flex flex-col gap-3 mt-4">
+        <input type="hidden" name="ticketId" value="0">
+        <div>
+          <label class="input input-bordered flex items-center gap-2" for="title">Title:
+
+            <input class="grow" type="text" name="title" placeholder="Title" required>
+          </label>
+        </div>
+        <div>
+          <label class="input input-bordered flex items-center gap-2" for="date">Date:
+
+            <input class="grow" type="date" name="date" required>
+          </label>
+        </div>
+        <div>
+          <label class="form-control w-full max-w" for="priority">
+            <div class="label">
+              <span class="label-text">Priority:</span>
+            </div>
+
+            <select class="select select-bordered w-full max-w" name="priority" required>
+          </label>
+          <option value="high">High</option>
+          <option value="medium">Medium</option>
+          <option value="normal">Normal</option>
+          <option value="low">Low</option>
+          </select>
+        </div>
+        <div>
+          <label class="form-control w-full max-w" for="stage">
+            <div class="label">
+              <span class="label-text">Stage:</span>
+            </div>
+
+            <select class="select select-bordered w-full max-w" name="stage" required>
+          </label>
+          <option value="todo">Todo</option>
+          <option value="in progress">In Progress</option>
+          <option value="completed">Completed</option>
+          </select>
+        </div>
+        <div id="teamMembers">
+          <label>Team Members:</label>
+          <div class="flex items-center gap-2">
+            <input class="input input-bordered w-full max-w-xs" type="email" name="teamMember"
+              placeholder="Enter team member email" required>
+            <button class="btn btn-outline btn-info" type="button" id="addMemberBtn">Add Team Member</button>
+          </div>
+        </div>
+        <ul id="teamList" class="list-disc ml-5 mt-2"></ul>
+        <div>
+          <button class="btn btn-active btn-primary" type="submit">Save Ticket</button>
+        </div>
+      </form>
+    </div>
+    <form method="dialog" class="modal-backdrop">
+      <button>close</button>
+    </form>
+  </dialog>
+
+  <script>
+    const addMemberBtn = document.getElementById('addMemberBtn');
+    const teamList = document.getElementById('teamList');
+    addMemberBtn.addEventListener('click', () => {
+      const input = document.querySelector('input[name="teamMember"]');
+      const email = input.value.trim();
+
+      if (email) {
+        const listItem = document.createElement('li');
+        listItem.textContent = email;
+
+        const removeBtn = document.createElement('button');
+        removeBtn.textContent = 'Remove';
+        removeBtn.className = 'ml-2 text-red-500';
+        removeBtn.type = 'button';
+
+        removeBtn.addEventListener('click', () => {
+          listItem.remove();
+        });
+
+        listItem.appendChild(removeBtn);
+        teamList.appendChild(listItem);
+
+        input.value = ''; // Clear the input field
+      }
+    });
+
+    function createCard({ label, title, date, comments, attachments, team }) {
+      function createTeamAvatars(team) {
+        const avatarGroup = document.createElement('div');
+        avatarGroup.className = 'avatar-group -space-x-4 rtl:space-x-reverse';
+
+        const maxVisibleAvatars = 5; // Número máximo de avatares visibles
+        const remainingAvatars = team.length - maxVisibleAvatars;
+
+        team.slice(0, maxVisibleAvatars).forEach(member => {
+          const avatarDiv = document.createElement('div');
+          avatarDiv.className = 'avatar';
+
+          const avatarInnerDiv = document.createElement('div');
+          avatarInnerDiv.className = 'size-6';
+
+          const img = document.createElement('img');
+          img.src = member.avatar;
+
+          avatarInnerDiv.appendChild(img);
+          avatarDiv.appendChild(avatarInnerDiv);
+          avatarGroup.appendChild(avatarDiv);
+        });
+
+        if (remainingAvatars > 0) {
+          const placeholderDiv = document.createElement('div');
+          placeholderDiv.className = 'avatar placeholder';
+
+          const placeholderInnerDiv = document.createElement('div');
+          placeholderInnerDiv.className = 'bg-neutral text-neutral-content size-6';
+
+          const span = document.createElement('span');
+          span.textContent = `+${remainingAvatars > 99 ? '99' : remainingAvatars}`;
+
+          placeholderInnerDiv.appendChild(span);
+          placeholderDiv.appendChild(placeholderInnerDiv);
+          avatarGroup.appendChild(placeholderDiv);
+        }
+
+        return avatarGroup;
+      }
+      const card = document.createElement('div');
+      card.className = 'relative flex flex-col items-start p-4 mt-3 bg-white rounded-lg cursor-pointer bg-opacity-90 group hover:bg-opacity-100';
+      card.draggable = true;
+
+      const button = document.createElement('button');
+      button.className = 'absolute top-0 right-0 flex items-center justify-center text-2xl mt-4 mr-2 text-gray-500 rounded hover:text-red-700 group-hover:flex';
+      button.innerHTML = `<i class='bx bxs-x-circle' ></i>`;
+      card.appendChild(button);
+
+      const labelSpan = document.createElement('span');
+      labelSpan.className = 'flex items-center h-6 px-3 text-xs font-semibold rounded-full ' + label.bgColor;
+      labelSpan.textContent = label.text;
+      card.appendChild(labelSpan);
+
+      const titleElement = document.createElement('h4');
+      titleElement.className = 'mt-3 text-sm font-medium';
+      titleElement.textContent = title;
+      card.appendChild(titleElement);
+
+      const detailsDiv = document.createElement('div');
+      detailsDiv.className = 'flex items-center w-full mt-3 text-xs font-medium text-gray-400';
+
+      const dateDiv = document.createElement('div');
+      dateDiv.className = 'flex items-center';
+      dateDiv.innerHTML = `
+        <svg class="w-4 h-4 text-gray-300 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd" />
+        </svg>
+        <span class="ml-1 leading-none">${date}</span>
+    `;
+      detailsDiv.appendChild(dateDiv);
+
+      const commentsDiv = document.createElement('div');
+      commentsDiv.className = 'relative flex items-center ml-4';
+      commentsDiv.innerHTML = `
+        <svg class="relative w-4 h-4 text-gray-300 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M18 5v8a2 2 0 01-2 2h-5l-5 4v-4H4a2 2 0 01-2-2V5a2 2 0 012-2h12a2 2 0 012 2zM7 8H5v2h2V8zm2 0h2v2H9V8zm6 0h-2v2h2V8z" clip-rule="evenodd" />
+        </svg>
+        <span class="ml-1 leading-none">${comments}</span>
+    `;
+      detailsDiv.appendChild(commentsDiv);
+
+      const attachmentsDiv = document.createElement('div');
+      attachmentsDiv.className = 'flex items-center ml-4';
+      attachmentsDiv.innerHTML = `
+        <svg class="w-4 h-4 text-gray-300 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M8 4a3 3 0 00-3 3v4a5 5 0 0010 0V7a1 1 0 112 0v4a7 7 0 11-14 0V7a5 5 0 0110 0v4a3 3 0 11-6 0V7a1 1 0 012 0v4a1 1 0 102 0V7a3 3 0 00-3-3z" clip-rule="evenodd" />
+        </svg>
+        <span class="ml-1 leading-none">${attachments}</span>
+    `;
+      detailsDiv.appendChild(attachmentsDiv);
+
+      const avatarGroup = createTeamAvatars(team);
+      detailsDiv.appendChild(avatarGroup);
+
+      card.appendChild(detailsDiv);
+
+
+      card.setAttribute('draggable', true);
+
+      return card;
+    }
+
+    function createColumn({ title, count }) {
+      const column = document.createElement('div');
+      column.className = 'flex flex-col flex-shrink-0 w-72';
+
+      const header = document.createElement('div');
+      header.className = 'flex items-center flex-shrink-0 h-10 px-2';
+
+      const titleSpan = document.createElement('span');
+      titleSpan.className = 'block text-sm font-semibold';
+      titleSpan.textContent = title;
+
+      const countSpan = document.createElement('span');
+      countSpan.className = 'flex items-center justify-center w-5 h-5 ml-2 text-sm font-semibold text-indigo-500 bg-white rounded bg-opacity-30';
+      countSpan.textContent = count;
+
+      const addButton = document.createElement('button');
+      addButton.className = 'flex items-center justify-center w-6 h-6 ml-auto text-indigo-500 rounded hover:bg-indigo-500 hover:text-indigo-100';
+      addButton.innerHTML = `
+        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+        </svg>
+    `;
+      addButton.addEventListener('click', (e) => {
+
+        document.querySelector('#modal-create-ticket').showModal()
+      })
+
+      header.appendChild(titleSpan);
+      header.appendChild(countSpan);
+      header.appendChild(addButton);
+      column.appendChild(header);
+
+      const cardContainer = document.createElement('div');
+      cardContainer.className = 'flex flex-col pb-2 overflow-auto';
+
+      column.appendChild(cardContainer);
+
+      return { column, cardContainer };
+    }
+
+    document.querySelector("#board-container").append(...['Backlog', 'Ready', 'Doing', 'Review', 'Blocked'].map((title) => {
+      const count = Math.floor(Math.random() * 8)
+      const { column, cardContainer } = createColumn({ title, count });
+
+
+      cardContainer.append(...Array.from({ length: count }, () => createCard({
+        label: { text: ["high", "medium", "normal", "low"][Math.floor(Math.random() * 4)], bgColor: ['bg-info', 'bg-success', 'bg-warning', 'bg-error'][Math.floor(Math.random() * 4)], textColor: 'black' },
+        title: 'This is the title of the card for the thing that needs to be done.',
+        date: 'Dec 12',
+        comments: 4,
+        attachments: 1,
+        team: [
+          { avatar: 'https://randomuser.me/api/portraits/women/26.jpg' },
+          { avatar: 'https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp' },
+          { avatar: 'https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp' },
+          { avatar: 'https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp' },
+          { avatar: 'https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp' },
+          { avatar: 'https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp' }
+        ]
+      })));
+      return column
+    }));
+
+  </script>
+</body>
+
+</html>
