@@ -31,7 +31,7 @@ export function createColumn({ title, count }) {
     column.appendChild(header);
 
     const cardContainer = document.createElement('div');
-    cardContainer.className = 'flex flex-col pb-2 overflow-auto';
+    cardContainer.className = 'flex flex-col pb-2 overflow-auto min-h-full';
 
     column.appendChild(cardContainer);
 

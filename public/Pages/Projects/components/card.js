@@ -39,8 +39,9 @@ export function createCard({ label, title, date, comments, attachments, team }) 
         return avatarGroup;
     }
     const card = document.createElement('div');
-    card.className = 'relative flex flex-col items-start p-4 mt-3 bg-white rounded-lg cursor-pointer bg-opacity-90 group hover:bg-opacity-100';
     card.draggable = true;
+    card.setAttribute("data-id", title)
+    card.className = 'relative flex flex-col items-start p-4 mt-3 bg-white rounded-lg cursor-pointer bg-opacity-90 group hover:bg-opacity-100';
 
     const button = document.createElement('button');
     button.className = 'absolute top-0 right-0 flex items-center justify-center text-2xl mt-4 mr-2 text-gray-500 rounded hover:text-red-700 group-hover:flex';

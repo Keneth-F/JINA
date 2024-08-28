@@ -29,10 +29,17 @@ addMemberBtn.addEventListener('click', () => {
 });
 
 const columns = await GetColumns()
-document.querySelector("#board-container").append(...columns.map(({ title, tickets }) => {
+const board = document.querySelector('#board-container')
+board.append(...columns.map(({ title, tickets }) => {
     const { column, cardContainer } = createColumn({ title, count: tickets.length });
-
-
+    Sortable.create(cardContainer, {
+        group: "shared",
+        animation: 150,
+        dataIdAttr: title,
+        onAdd: function (evt) {
+            console.log(evt.item.dataset.id)
+        },
+    });
     cardContainer.append(...tickets.map(({ attachments, comments, date, label, team, title }) => createCard({
         label,
         title,
@@ -43,3 +50,6 @@ document.querySelector("#board-container").append(...columns.map(({ title, ticke
     })));
     return column
 }));
+Sortable.create(board, {
+    animation: 150
+})

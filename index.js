@@ -1,14 +1,20 @@
 import express from "express"
+import cookieParser from "cookie-parser";
+
 import ticketsRouter from './src/modules/tickets/tickets.routes.js'
-import path from 'path';
-import { fileURLToPath } from 'url';
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+import authRoutes from './src/modules/auth/auth.routes.js'
+import { PORT } from "./src/config/index.js";
+
 const app = express()
-const port = 3000;
+const port = PORT;
+
+app.use(cookieParser());
 app.use(express.static("public"))
 app.use(express.json())
+
+app.use("/auth", authRoutes);
 app.use("/ticket", ticketsRouter)
+
 app.all('*', (req, res,) => {
   return res.status(404).json({ message: 'No existe la ruta' })
 })
