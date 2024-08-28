@@ -1,31 +1,10 @@
-// import { User } from "./user.model.js";
+import { User } from "./user.model.js";
 import bcrypt from "bcryptjs";
 import { createAccessToken } from "../../utils/index.js";
 
-export const register = async (req, res) => {
-  try {
-    const { username, email, password } = req.body;
-
-    const userFound = await User.findOne({ email });
-
-    if (userFound)
-      return res.status(400).json({
-        message: ["The email is already in use"],
-      });
-
-    // hashing the password
-    const passwordHash = await bcrypt.hash(password, 10);
-
-    // creating the user
-    const newUser = new User({
-      username,
-      email,
-      password: passwordHash,
-    });
-
-    // saving the user in the database
-    const userSaved = await newUser.save();
-
+export const register = async ({ body }, res) => User
+  .register(body)
+  .then((data) => {
     // create access token
     const token = await createAccessToken({
       id: userSaved._id,
@@ -42,10 +21,11 @@ export const register = async (req, res) => {
       username: userSaved.username,
       email: userSaved.email,
     });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
+  })
+  .catch(error => res.status(500).json({ message: error }))
+
+
+
 
 export const login = async (req, res) => {
   try {
