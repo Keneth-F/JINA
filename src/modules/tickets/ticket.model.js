@@ -113,17 +113,12 @@ const tickets = [
 export class Ticket {
   static async getAll() {
     return tickets
-    try {
-      const [results] = await db.query("SELECT * FROM tickets");
-      return results;
-    } catch (err) {
-      throw "Error al cargar las Tickets";
-    }
+    const [results] = await db.query("SELECT * FROM tickets");
+    return results;
   }
 
   static async getById({ id }) {
     const ticket = tickets.find(ticket => ticket.id == id)
-    console.log({ ticket })
     return ticket
   }
 
@@ -132,16 +127,13 @@ export class Ticket {
       id: tickets.length,
       ...data
     }
-
     tickets.push(ticket)
-
     return ticket
   }
 
   static async delete({ id }) {
     const ticketIndex = tickets.findIndex(ticket => ticket.id == id)
     if (ticketIndex === -1) return false
-
     tickets.splice(ticketIndex, 1)
     return true
   }
@@ -149,12 +141,10 @@ export class Ticket {
   static async update({ id, data }) {
     const ticketIndex = tickets.findIndex(ticket => ticket.id == id)
     if (ticketIndex === -1) return false
-
     tickets[ticketIndex] = {
       ...tickets[ticketIndex],
       ...data
     }
-
     return tickets[ticketIndex]
   }
 }

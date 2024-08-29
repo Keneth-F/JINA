@@ -4,27 +4,22 @@ const users = [
     }
 ]
 
-
 export class User {
-    static async register({ username, email, password }) {
-        try {
-            const user = users.find(user => user.email == email)
-
-
-            if (user)
-                return res.status(400).json({
-                    message: ["The email is already in use"],
-                });
-
-            // hashing the password
-            // const passwordHash = await bcrypt.hash(password, 10);
-
-            // creating the user
-            users.push(user)
-
-
-        } catch (error) {
-            res.status(500).json({ message: error.message });
-        }
+    static async signUp({ username, email, password }) {
+        const user = users.find(user => user.email == email)
+        if (user)
+            throw { status: 400, message: "The email is already in use" }
+        users.push(user)
+        return user
     }
+    static async signIn({ email, password }) {
+        const user = users.find(user => user.email == email)
+        if (!user)
+            throw { status: 400, message: "The email does not exist" }
+        return user
+    };
+    static async signOut({ email, password }) {
+        return null
+    };
+
 }

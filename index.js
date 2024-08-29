@@ -14,9 +14,8 @@ app.use(express.json())
 app.use("/auth", authRoutes);
 app.use("/ticket", ticketsRouter)
 
-app.all('*', (req, res,) => {
-  return res.status(404).json({ message: 'No existe la ruta' })
-})
+app.all('*', (_, __, next) => next({ status: 404, message: 'No existe la ruta' }))
+app.use(({ message, status }, _, res, __) => res.status(status || 500).json({ message }))
 app.listen(port, () => {
   console.log(`La aplicación está funcionando en http://localhost:${port}`);
 });

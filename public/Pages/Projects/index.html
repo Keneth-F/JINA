@@ -10,15 +10,75 @@
   <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 
-<body class="flex flex-wrap p-5 gap-5 justify-center">
-  <div
-    class="w-48 h-24 flex justify-center items-center border-2 border-dashed border-gray-600 rounded cursor-pointer text-gray-600 text-2xl transition-colors duration-300 transform order-[999] hover:text-gray-500 hover:scale-105">
-    <i class='bx bx-plus'></i>
+<body>
+  <div class="navbar bg-base-100">
+    <div class="flex-1">
+      <a class="btn btn-ghost text-xl" href="/"><i class='bx bx-arrow-back'></i>Home</a>
+    </div>
+    <div class="flex-none">
+      <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
+        <div class="w-10 rounded-full">
+          <img alt="Tailwind CSS Navbar component"
+            src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+        </div>
+      </div>
+      <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
+        <i class='bx bx-log-out bx-rotate-180 text-3xl'></i>
+
+      </div>
+
+
+    </div>
   </div>
-  <div
-    class="w-48 h-24 flex justify-center items-center border-2 border-dashed border-gray-600 rounded cursor-pointer text-gray-600 text-2xl transition-colors duration-300 transform order-[999] hover:text-gray-500 hover:scale-105">
-    1
+  <div class="flex flex-wrap p-5 gap-5 justify-center" id="projects-container">
+    <div class=" w-48 h-24 flex justify-center items-center border-2 border-dashed border-gray-600 rounded cursor-pointer
+    text-gray-600 text-2xl transition-colors duration-300 transform order-[999] hover:text-gray-500 hover:scale-105"
+      id="add-project">
+      <i class='bx bx-plus'></i>
+    </div>
   </div>
+  <dialog id="modal-create-project" class="modal">
+    <div class="modal-box">
+      <form method="dialog">
+        <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+      </form>
+      <form id="projectForm" class="flex flex-col gap-3 mt-4">
+        <input type="hidden" name="projectId" value="0">
+        <div>
+          <label class="input input-bordered flex items-center gap-2" for="title">Title:
+
+            <input class="grow" type="text" name="title" placeholder="Title" required>
+          </label>
+        </div>
+        <div>
+          <label class="form-control w-full max-w" for="stage">
+            <div class="label">
+              <span class="label-text">Background:</span>
+            </div>
+
+            <select class="select select-bordered w-full max-w" id="gradient" required>
+              <option value="" disabled selected>Select a gradient</option>
+              <option value="bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500">Pink to Yellow</option>
+              <option value="bg-gradient-to-r from-green-400 to-blue-500">Green to Blue</option>
+              <option value="bg-gradient-to-r from-purple-400 via-pink-500 to-red-500">Purple to Red</option>
+              <option value="bg-gradient-to-tr from-blue-200 via-indigo-200 to-pink-200">Blue to Pink</option>
+              <option value="bg-gradient-to-r from-teal-400 to-blue-500">Teal to Blue</option>
+              <option value="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">Indigo to Pink</option>
+            </select>
+          </label>
+        </div>
+        <div id="gradientPreview" class="w-full h-8 rounded-md mt-2"></div>
+        <div>
+          <button class="btn btn-active btn-primary" type="submit">Save Project</button>
+        </div>
+      </form>
+    </div>
+    <form method="dialog" class="modal-backdrop">
+      <button>close</button>
+    </form>
+  </dialog>
+  <script src="main.js" type="module"></script>
+
 </body>
 
 </html>

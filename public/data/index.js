@@ -40,3 +40,10 @@ export const GetColumns = async () => {
         }))
     }))
 }
+
+export const GetProjects = async () => {
+    return [
+        { title: "Board 1", bgColor: "bg-gradient-to-tr from-blue-200 via-indigo-200 to-pink-200" },
+        { title: "Board 2", bgColor: 'bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500' },
+    ]
+}

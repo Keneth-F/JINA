@@ -20,10 +20,6 @@ export function createColumn({ title, count }) {
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
       </svg>
   `;
-    addButton.addEventListener('click', (e) => {
-
-        document.querySelector('#modal-create-ticket').showModal()
-    })
 
     header.appendChild(titleSpan);
     header.appendChild(countSpan);
@@ -35,5 +31,5 @@ export function createColumn({ title, count }) {
 
     column.appendChild(cardContainer);
 
-    return { column, cardContainer };
+    return { column, cardContainer, addButton, countSpan };
 }
