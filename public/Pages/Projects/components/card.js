@@ -1,4 +1,4 @@
-export function createCard({ label, title, date, comments, attachments, team, onDelete }) {
+export function createCard({ label, title, date, comments, attachments, team }) {
     function createTeamAvatars(team) {
         const avatarGroup = document.createElement('div');
         avatarGroup.className = 'avatar-group -space-x-4 rtl:space-x-reverse';
@@ -46,7 +46,6 @@ export function createCard({ label, title, date, comments, attachments, team, on
     const button = document.createElement('button');
     button.className = 'absolute top-0 right-0 flex items-center justify-center text-2xl mt-4 mr-2 text-gray-500 rounded hover:text-red-700 group-hover:flex';
     button.innerHTML = `<i class='bx bxs-x-circle' ></i>`;
-    button.addEventListener('click', onDelete)
     card.appendChild(button);
 
     const labelSpan = document.createElement('span');

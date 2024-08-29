@@ -28,7 +28,7 @@ addMemberBtn.addEventListener('click', () => {
     }
 });
 
-const columns = await GetColumns()
+let columns = await GetColumns()
 document.querySelector("[name='stage']").append(...columns.map(({ title }) => {
     const option = document.createElement("option")
     option.value = title
@@ -48,22 +48,29 @@ board.append(...columns.map(({ title, tickets }) => {
         animation: 150,
         dataIdAttr: title,
         onAdd: function (evt) {
-            tickets.push(evt.item.dataset.id)
+            const ticket = columns.reduce((acc, col, i) => col.tickets.find((t, i) => `${col.title}-${i}-${t.title}` == evt.item.dataset.id) ?? acc, null)
+            console.log(ticket)
+            columns = columns.map((col) => col = col.tickets.filter((t, i) => ticket != ticket))
+            evt.item.dataset.id = `${title}-${tickets.length}-${ticket.title}`
+            tickets.push(ticket)
             countSpan.textContent = tickets.length
         },
         onRemove: function (evt) {
-            tickets.pop()
+            const ticket = tickets.find((t, i) => `${column.title}-${i}-${t.title}` == evt.item.dataset.id)
+            console.log(evt.item.dataset.id)
+            console.log(ticket)
+            tickets = tickets.filter((t) => t != ticket)
             countSpan.textContent = tickets.length
-            console.log(title, '->', tickets)
         },
 
     });
-    cardContainer.append(...tickets.map(({ attachments, comments, date, label, team, title }) => {
-        const { card, button } = createCard({ label, title, date, comments, attachments, team })
+    cardContainer.append(...tickets.map(({ attachments, comments, date, label, team, title: cTitle }, i) => {
+        const { card, button } = createCard({ label, title: `${title}-${i}-${cTitle}`, date, comments, attachments, team })
         button.addEventListener("click", (e) => {
+            console.log(tickets)
             tickets.pop()
             countSpan.textContent = tickets.length
-            console.log(title, '->', tickets)
+            console.log(title, '->', tickets.length)
             card.remove()
         })
         return card
