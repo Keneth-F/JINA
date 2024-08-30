@@ -1,6 +1,7 @@
-export function createColumn({ title, count }) {
+export function createColumn({ title, count, id }) {
     const column = document.createElement('div');
     column.className = 'flex flex-col flex-shrink-0 w-72';
+    column.setAttribute("data-id", id)
 
     const header = document.createElement('div');
     header.className = 'flex items-center flex-shrink-0 h-10 px-2';

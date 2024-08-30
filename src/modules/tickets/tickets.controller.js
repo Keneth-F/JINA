@@ -1,25 +1,25 @@
 import { Ticket } from "./ticket.model.js"
-const getAll = (req, res) => Ticket
+const getAll = (req, res, next) => Ticket
   .getAll()
   .then((data) => res.json({ data }))
   .catch(({ message, status }) => next({ message, status }))
 
-const create = ({ body }, res) => Ticket
+const create = ({ body }, res, next) => Ticket
   .create(body)
   .then((data) => res.json({ data }))
   .catch(({ message, status }) => next({ message, status }))
 
-const getById = ({ params }, res) => Ticket
+const getById = ({ params }, res, next) => Ticket
   .getById(params)
   .then((data) => res.json({ data }))
   .catch(({ message, status }) => next({ message, status }))
 
-const _delete = ({ params }, res) => Ticket
+const _delete = ({ params }, res, next) => Ticket
   .delete(params)
   .then((data) => res.json({ data }))
   .catch(({ message, status }) => next({ message, status }))
 
-const update = ({ params: { id }, body: data }, res) => Ticket
+const update = ({ params: { id }, body: data }, res, next) => Ticket
   .update({ id, data })
   .then((data) => res.json({ data }))
   .catch(({ message, status }) => next({ message, status }))

@@ -1,6 +1,19 @@
-import { GetColumns } from "../../../data/index.js";
+import { GetProjects } from "../../../data/index.js";
 import { createCard } from "../components/card.js";
 import { createColumn } from "../components/column.js";
+
+const projects = await GetProjects()
+const project = projects.find((project) => project.id == new URLSearchParams(location.search).get("id"))
+let columns = project.columns
+
+document.querySelector("#main").className += project.bgColor
+document.querySelector("#board-title").textContent = project.title
+document.querySelector("[name='stage']").append(...columns.map(({ title, id }) => {
+    const option = document.createElement("option")
+    option.value = id
+    option.textContent = title
+    return option
+}))
 
 const addMemberBtn = document.getElementById('addMemberBtn');
 const teamList = document.getElementById('teamList');
@@ -28,19 +41,12 @@ addMemberBtn.addEventListener('click', () => {
     }
 });
 
-let columns = await GetColumns()
-document.querySelector("[name='stage']").append(...columns.map(({ title }) => {
-    const option = document.createElement("option")
-    option.value = title
-    option.textContent = title
-    return option
-}))
 const board = document.querySelector('#board-container')
-board.append(...columns.map(({ title, tickets }) => {
-    const { column, cardContainer, addButton, countSpan } = createColumn({ title, count: tickets.length });
+board.append(...columns.sort((a, b) => a.order - b.order).map(({ id, cards, title }) => {
+    const { column, cardContainer, addButton, countSpan } = createColumn({ title, count: cards.length, id });
     addButton.addEventListener('click', (e) => {
         const modal = document.querySelector('#modal-create-ticket')
-        modal.querySelector("[name='stage']").value = title
+        modal.querySelector("[name='stage']").value = id
         modal.showModal()
     })
     Sortable.create(cardContainer, {
@@ -48,29 +54,24 @@ board.append(...columns.map(({ title, tickets }) => {
         animation: 150,
         dataIdAttr: title,
         onAdd: function (evt) {
-            const ticket = columns.reduce((acc, col, i) => col.tickets.find((t, i) => `${col.title}-${i}-${t.title}` == evt.item.dataset.id) ?? acc, null)
-            console.log(ticket)
-            columns = columns.map((col) => col = col.tickets.filter((t, i) => ticket != ticket))
-            evt.item.dataset.id = `${title}-${tickets.length}-${ticket.title}`
-            tickets.push(ticket)
-            countSpan.textContent = tickets.length
+            const ticket = columns.reduce((acc, col) => col.cards.find((t) => t.id == evt.item.dataset.id) ?? acc, null)
+            cards.push(ticket)
+            countSpan.textContent = cards.length
         },
         onRemove: function (evt) {
-            const ticket = tickets.find((t, i) => `${column.title}-${i}-${t.title}` == evt.item.dataset.id)
-            console.log(evt.item.dataset.id)
-            console.log(ticket)
-            tickets = tickets.filter((t) => t != ticket)
-            countSpan.textContent = tickets.length
+            const ticket = cards.find((t) => t.id == evt.item.dataset.id)
+            cards = cards.filter((t) => t != ticket)
+            countSpan.textContent = cards.length
         },
 
     });
-    cardContainer.append(...tickets.map(({ attachments, comments, date, label, team, title: cTitle }, i) => {
-        const { card, button } = createCard({ label, title: `${title}-${i}-${cTitle}`, date, comments, attachments, team })
+    cardContainer.append(...cards.sort((a, b) => a.order - b.order).map(({ attachments, comments, date, label, team, title, id }, i) => {
+        const { card, button } = createCard({ label, title, date, comments, attachments, team, id })
         button.addEventListener("click", (e) => {
-            console.log(tickets)
-            tickets.pop()
-            countSpan.textContent = tickets.length
-            console.log(title, '->', tickets.length)
+            console.log(cards)
+            cards.pop()
+            countSpan.textContent = cards.length
+            console.log(title, '->', cards.length)
             card.remove()
         })
         return card

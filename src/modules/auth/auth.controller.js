@@ -1,7 +1,7 @@
 import { User } from "./user.model.js";
 import { createAccessToken } from "../../utils/index.js";
 
-export const register = ({ body }, res) => User
+export const register = ({ body }, res, next) => User
   .signUp(body)
   .then((data) => createAccessToken(data))
   .then((token) =>
@@ -13,7 +13,7 @@ export const register = ({ body }, res) => User
   )
   .catch(error => next({ message: `Error interno del servidor: ${error}` }))
 
-export const login = ({ body }, res) => User
+export const login = ({ body }, res, next) => User
   .signIn(body)
   .then((data) => createAccessToken(data))
   .then((token) =>
@@ -27,7 +27,7 @@ export const login = ({ body }, res) => User
 
 export const verifyToken = (req, res) => res.json(req.user)
 
-export const logout = ({ body }, res) => User
+export const logout = ({ body }, res, next) => User
   .signOut(body)
   .then((data) => createAccessToken(data))
   .then((token) =>

@@ -13,4 +13,4 @@ document.getElementById('gradient').addEventListener('change', function () {
 });
 
 const projects = await GetProjects()
-document.querySelector("#projects-container").append(...projects.map(({ title, bgColor }) => createProjectCard(title, bgColor)))
+document.querySelector("#projects-container").append(...projects.map(({ title, bgColor, id, }) => createProjectCard({ title, bgColor, id })))

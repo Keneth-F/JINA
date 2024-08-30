@@ -10,6 +10,7 @@ export const auth = (req, res, next) => {
     req.user = user;
     return next();
   } catch (error) {
+    console.log(error)
     return next(error)
   }
 };
