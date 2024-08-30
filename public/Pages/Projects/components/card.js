@@ -7,18 +7,18 @@ export function createCard({ label, title, date, comments, attachments, team, id
         const remainingAvatars = team.length - maxVisibleAvatars;
 
         team.slice(0, maxVisibleAvatars).forEach(member => {
-            const avatarDiv = document.createElement('div');
-            avatarDiv.className = 'avatar';
+            const placeholderDiv = document.createElement('div');
+            placeholderDiv.className = 'avatar placeholder';
 
-            const avatarInnerDiv = document.createElement('div');
-            avatarInnerDiv.className = 'size-6';
+            const placeholderInnerDiv = document.createElement('div');
+            placeholderInnerDiv.className = 'bg-neutral text-neutral-content size-6';
 
-            const img = document.createElement('img');
-            img.src = member.avatar;
+            const span = document.createElement('span');
+            span.textContent = member.avatar.slice(-12, -10);
 
-            avatarInnerDiv.appendChild(img);
-            avatarDiv.appendChild(avatarInnerDiv);
-            avatarGroup.appendChild(avatarDiv);
+            placeholderInnerDiv.appendChild(span);
+            placeholderDiv.appendChild(placeholderInnerDiv);
+            avatarGroup.appendChild(placeholderDiv)
         });
 
         if (remainingAvatars > 0) {

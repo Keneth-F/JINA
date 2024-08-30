@@ -1,36 +1,38 @@
-export function createColumn({ title, count, id }) {
+export function createColumn({ title, id }) {
     const column = document.createElement('div');
     column.className = 'flex flex-col flex-shrink-0 w-72';
-    column.setAttribute("data-id", id)
+    column.setAttribute("data-column-id", id)
 
     const header = document.createElement('div');
-    header.className = 'flex items-center flex-shrink-0 h-10 px-2';
+    header.className = 'flex items-center justify-between flex-shrink-0 h-10 px-2';
 
     const titleSpan = document.createElement('span');
     titleSpan.className = 'block text-sm font-semibold';
     titleSpan.textContent = title;
 
-    const countSpan = document.createElement('span');
-    countSpan.className = 'flex items-center justify-center w-5 h-5 ml-2 text-sm font-semibold text-indigo-500 bg-white rounded bg-opacity-30';
-    countSpan.textContent = count;
+    const deleteButton = document.createElement('button');
+    deleteButton.className = 'flex items-center justify-center w-6 h-6 text-indigo-500 rounded hover:bg-indigo-500 hover:text-indigo-100';
+
+    const trashIcon = document.createElement('i');
+    trashIcon.className = 'bx bxs-trash';
 
     const addButton = document.createElement('button');
-    addButton.className = 'flex items-center justify-center w-6 h-6 ml-auto text-indigo-500 rounded hover:bg-indigo-500 hover:text-indigo-100';
-    addButton.innerHTML = `
-      <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-      </svg>
-  `;
+    addButton.className = 'flex items-center justify-center w-6 h-6 text-indigo-500 rounded hover:bg-indigo-500 hover:text-indigo-100';
 
-    header.appendChild(titleSpan);
-    header.appendChild(countSpan);
+    const icon = document.createElement('i');
+    icon.className = 'bx bx-plus';
+
+    deleteButton.appendChild(trashIcon);
+    addButton.appendChild(icon);
     header.appendChild(addButton);
+    header.appendChild(titleSpan);
+    header.appendChild(deleteButton);
     column.appendChild(header);
 
     const cardContainer = document.createElement('div');
-    cardContainer.className = 'flex flex-col pb-2 overflow-auto min-h-full';
+    cardContainer.className = 'flex flex-col pb-2 overflow-auto min-h-max';
 
     column.appendChild(cardContainer);
 
-    return { column, cardContainer, addButton, countSpan };
+    return { column, cardContainer, addButton, deleteButton };
 }

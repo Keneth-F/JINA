@@ -35,16 +35,16 @@ export const GetProjects = async () => {
                             "order": 1,
                             "description": "Create a mockup for the landing page",
                             "label": labels[Math.floor(Math.random() * labels.length)],
-                            date: 'Dec 12',
-                            comments: Math.floor(Math.random() * 10),
-                            attachments: Math.floor(Math.random() * 2),
-                            team: [
-                                { avatar: 'https://randomuser.me/api/portraits/women/26.jpg' },
-                                { avatar: 'https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp' },
-                                { avatar: 'https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp' },
-                                { avatar: 'https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp' },
-                                { avatar: 'https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp' },
-                                { avatar: 'https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp' }
+                            "date": 'Dec 12',
+                            "comments": Math.floor(Math.random() * 10),
+                            "attachments": Math.floor(Math.random() * 2),
+                            "team": [
+                                { "avatar": 'https://randomuser.me/api/portraits/women/26.jpg' },
+                                { "avatar": 'https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp' },
+                                { "avatar": 'https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp' },
+                                { "avatar": 'https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp' },
+                                { "avatar": 'https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp' },
+                                { "avatar": 'https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp' }
                             ].slice(0, Math.floor(Math.random() * 6) + 1)
                         },
                         {
@@ -283,4 +283,32 @@ export const GetProjects = async () => {
             "updatedAt": "2024-08-29T13:30:15Z"
         }
     ]
+}
+
+export const InsertColumn = async ({ title, order }) => {
+    return {
+        id: crypto.randomUUID(),
+        title,
+        order,
+        boardId: "b1a2b3c4-d5e6-f7g8-h9i0-j1k2l3m4n5o6",
+        cards: [],
+        createdAt: new Date(),
+        updatedAt: new Date()
+    }
+
+}
+
+export const InsertCard = async ({ title, order, description, priority, date, team, stage }) => {
+    return {
+        id: crypto.randomUUID(),
+        title,
+        order,
+        description,
+        label: labels.find((lbl) => lbl.text == priority),
+        date,
+        comments: Math.floor(Math.random() * 10),
+        attachments: Math.floor(Math.random() * 2),
+        team
+    }
+
 }
