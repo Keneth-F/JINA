@@ -2,6 +2,7 @@ const projects = []
 export class Project {
   static async getAll({ email }) {
     return projects.filter(project => project.owner == email) ?? []
+
     const [results] = await db.query("SELECT * FROM projects");
     return results;
   }
@@ -13,8 +14,8 @@ export class Project {
 
   static async create({ user, ...data }) {
     const project = {
-      id: projects.length,
       ...data,
+      id: projects.length,
       owner: user.email,
       scenes: []
     }

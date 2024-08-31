@@ -1,113 +1,143 @@
-import { InsertCard, InsertColumn } from "../../../data/index.js";
-import { createCard } from "../components/card.js";
-import { createColumn } from "../components/column.js";
-import { createColumnButton } from "../components/createColumn.js";
-import './addTicketForm.js'
-import { getCurrentProject } from "./getCurrentProject.js";
+import { createCard } from "../../../components/card.js";
+import { createColumn } from "../../../components/column.js";
+import { createColumnButton } from "../../../components/createColumn.js";
+import { fetchSessionStatus } from "../../../data/auth.data.js";
+import { upsertCard } from "../../../data/cards.data.js";
+import { deleteColumn, insertColumn } from "../../../data/columns.data.js";
+import { getProjectById } from "../../../data/projects.data.js"
 
-const { project, user } = await getCurrentProject()
+const { isAuthenticated, message } = await fetchSessionStatus()
+const user = JSON.parse(message)
+if (!isAuthenticated) {
+    window.location.assign('/pages/sign-in');
+}
+const projectId = new URLSearchParams(location.search).get("id");
+const project = await getProjectById(projectId)
+try {
 
-const modal = document.querySelector('#modal-create-ticket')
-const board = document.querySelector('#board-container')
-const { button: BtnCreateColumn, container: BtnCreateColumnContainer } = createColumnButton()
-BtnCreateColumn.addEventListener("click", onAddColumn)
-board.append(BtnCreateColumnContainer)
-initializeBoard()
-
-function initializeBoard() {
-    Sortable.create(board, { animation: 150, draggable: "[data-column-id]" })
-    document.querySelector("#main").className += project.bgColor;
-    document.querySelector("#board-title").textContent = project.title;
-    const orderedColumns = project.scenes.sort((a, b) => a.order - b.order)
-    orderedColumns.forEach(populateColumnData);
+} catch (error) {
+    alert(`Error: ${error.message}`);
 }
 
-function populateColumnData({ id, title, tickets }) {
+const $modal = document.querySelector('#modal-ticket')
+const $form = $modal.querySelector("#ticket-form")
+const $team = $modal.querySelectorAll("li")
+const $board = document.querySelector('#board-container')
+Sortable.create($board, { animation: 150, draggable: "[data-column-id]" })
+const $createColumn = createColumnButton()
+const stagesSelect = document.querySelector("[name='stage']")
+$board.append($createColumn.container)
+
+//TODO board.insertBefore(column, BtnCreateColumnContainer)
+
+document.querySelector("#main").className += project.bgColor;
+document.querySelector("#board-title").textContent = project.title;
+
+$modal.addEventListener("close", (event) => { $form.reset() });
+$form.addEventListener("submit", async (event) => {
+    event.preventDefault()
+    const data = Object.fromEntries(new FormData(event.target))
+    const currentColumn = project.scenes.find((column) => column.id == data.stage)
+    data.team = [...$team].map(li => ({ avatar: li.textContent }))
+    data.order = currentColumn.tickets.length
+    const newCard = await upsertCard(data)
+    currentColumn.tickets.push(newCard)
+    const $column = document.querySelector(`[data-column-id="${currentColumn.id}"]`);
+    const $cardContainer = $column.querySelector(`#${currentColumn.title}-${currentColumn.id}`)
+    const $existingCard = document.querySelector(`[data-id="${newCard.id}"]`);
+    const $newCard = createCardElement(newCard);
+    console.log({ newCard, currentColumn, $column, $existingCard, $newCard })
+    if ($existingCard) {
+        $cardContainer.replaceChild($newCard, $existingCard);
+        //TODO replace
+    } else {
+        $cardContainer.append($newCard);
+        //TODO add
+    }
+    $modal.close()
+})
+
+$createColumn.button.addEventListener("click", (event) => {
+    const $inputContainer = document.createElement('div');
+    $inputContainer.className = 'flex flex-col flex-shrink-0 w-72';
+    const $input = document.createElement('input');
+    $input.type = 'text';
+    $input.className = 'w-full h-10 text-sm font-semibold rounded border border-indigo-500 px-3';
+    $inputContainer.append($input)
+    $board.insertBefore($inputContainer, $createColumn.container);
+    $input.focus();
+    $input.addEventListener('blur', async (e) => {
+        const column = await insertColumn({ title: $input.value, order: project.scenes.length })
+        const $column = createColumnElement(column)
+        project.scenes.push(column)
+        $board.insertBefore($column, $createColumn.container)
+        $inputContainer.remove()
+    });
+    $input.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+            $input.blur()
+        }
+    });
+})
+$board.append(...project.scenes.sort((a, b) => a.order - b.order).map(createColumnElement))
+function createColumnElement(column) {
     const option = document.createElement("option");
-    option.value = id;
-    option.textContent = title;
-    document.querySelector("[name='stage']").append(option)
+    option.value = column.id;
+    option.textContent = column.title;
+    stagesSelect.append(option)
 
-    const { column, cardContainer, addButton, deleteButton } = createColumn({ title, id })
-
-    deleteButton.addEventListener("click", (evt) => {
+    const $column = createColumn(column)
+    $column.deleteButton.addEventListener("click", async (evt) => {
         const currentColumn = project.scenes.find((column) => column.id == id)
         project.scenes = project.scenes.filter((_column) => _column.id != currentColumn.id)
-        console.log(project.scenes)
-        column.remove()
+        try {
+            await deleteColumn(column.id)
+            $column.column.remove()
+        } catch (error) {
+            alert(`Error: ${error.message}`);
+        }
     })
 
-    const onDeleteCard = (cardId) => {
+    $column.addButton.addEventListener('click', () => {
+        stagesSelect.value = column.id
+        $modal.showModal()
+    })
+
+    const onDeleteCard = async (cardId) => {
         const previousColumn = project.scenes.find((column) => column.tickets.find((card) => card.id == cardId && column.id == id)) ?? project.scenes.find((column) => column.tickets.find((card) => card.id == cardId))
         const card = previousColumn.tickets.find((card) => card.id == cardId)
         previousColumn.tickets = previousColumn.tickets.filter((_card) => _card.id != card.id)
+        //TODO UPDATE FROM SERVER
     }
-
-
 
     const onDroppedCard = (evt) => {
         const previousColumn = project.scenes.find((column) => column.tickets.find((card) => card.id == evt.item.dataset.id))
         const card = previousColumn.tickets.find((card) => card.id == evt.item.dataset.id)
         const currentColumn = project.scenes.find((column) => column.id == id)
         currentColumn.tickets.push(card)
+        //TODO UPDATE FROM SERVER
     }
+    $column.cardContainer.append(...column.tickets.sort((a, b) => a.order - b.order).map(createCardElement))
 
-    Sortable.create(cardContainer, {
+    Sortable.create($column.cardContainer, {
         group: "shared", animation: 150, onAdd: onDroppedCard, onRemove: (evt) => onDeleteCard(evt.item.dataset.id)
     })
 
-    const orderedCards = tickets.sort((a, b) => a.order - b.order)
-    orderedCards.forEach((card) => cardContainer.append(populateCardData(card, onDeleteCard)))
-
-    addButton.addEventListener('click', () => {
-        modal.querySelector("[name='stage']").value = id
-        modal.showModal()
-        modal.querySelector("#ticket-form").onsubmit = async (event) => {
-            event.preventDefault()
-            const tmp = { ...Object.fromEntries(new FormData(event.target)) }
-            const currentColumn = project.scenes.find((column) => column.id == tmp.stage)
-            const team = [...modal.querySelectorAll("li")].map(li => ({ avatar: li.textContent }))
-            const card = await InsertCard({ ...tmp, team, order: currentColumn.tickets.length })
-            currentColumn.tickets.push(card)
-            cardContainer.append(populateCardData(card, () => onDeleteCard(card.id)))
-            modal.close()
-        }
-    })
-    board.insertBefore(column, BtnCreateColumnContainer)
-}
-function populateCardData({ attachments, comments, date, label, team, title, id }, onDelete) {
-    const { card, button: DeleteBtn } = createCard({ label, title, date, comments, attachments, team, id })
-    DeleteBtn.addEventListener("click", (e) => {
-        onDelete(id)
-        card.remove()
-    })
-    card.addEventListener("click", () => {
-        document.querySelector("#modal-update-ticket").showModal()
-    })
-    return card
+    return $column.column
 }
 
-function onAddColumn() {
-    const inputContainer = document.createElement('div');
-    inputContainer.className = 'flex flex-col flex-shrink-0 w-72';
-    const input = document.createElement('input');
-    input.type = 'text';
-    input.className = 'w-full h-10 text-sm font-semibold rounded border border-indigo-500 px-3';
-    inputContainer.append(input)
-    board.insertBefore(inputContainer, BtnCreateColumnContainer);
-    input.focus();
-    input.addEventListener('blur', async (e) => {
-        const column = await InsertColumn({ title: input.value, order: project.scenes.length })
-        project.scenes.push(column)
-        inputContainer.remove()
-        populateColumnData(column)
-    });
-    input.addEventListener('keydown', function (event) {
-        if (event.key === 'Enter') {
-            input.blur()
-        }
-    });
+function createCardElement(card) {
+    const $card = createCard(card)
+    $card.button.addEventListener("click", (e) => {
+        //TODO onDelete(id)
+
+    })
+
+    return $card.card
+
 }
+
+
 
 
 // modal.querySelector("#ticket-form").addEventListener("submit", async (event) => {

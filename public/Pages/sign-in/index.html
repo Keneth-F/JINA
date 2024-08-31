@@ -57,29 +57,25 @@
     </div>
   </div>
   <script type="module">
-    import { checkAlreadySession } from '../checkAuth.js'
-    await checkAlreadySession()
+    import { fetchSessionStatus, loginRequest } from '/data/auth.data.js'
+    const { isAuthenticated, message } = await fetchSessionStatus();
+
+    if (isAuthenticated) {
+      window.location.assign('/pages/projects');
+    } else {
+      alert('Invalid username or password');
+    }
     document.getElementById('loginForm').addEventListener('submit', async function (event) {
       event.preventDefault();
 
       const email = document.getElementById('email').value;
       const password = document.getElementById('password').value;
 
-      const response = await fetch('/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ email, password })
-      });
-
-      if (response.ok) {
-        // Redirigir al usuario a la página principal o dashboard
-        console.log(await response.json())
+      try {
+        await loginRequest(email, password);
         window.location.assign('/pages/projects');
-      } else {
-        // Manejar errores (ej. credenciales incorrectas)
-        alert('Invalid username or password');
+      } catch (error) {
+        alert(error.message);
       }
     });
   </script>

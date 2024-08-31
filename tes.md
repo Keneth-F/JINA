@@ -1,3 +1,8 @@
+TODO projects add at the end
+TODO check exist htmlelement
+TODO try catch para todo
+TODO delete date to auto
+
 export const productiveList = [
 {
 title: "Boards",

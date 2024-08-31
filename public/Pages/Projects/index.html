@@ -30,19 +30,20 @@
 
     </div>
   </div>
-  <div class="flex flex-wrap p-5 gap-5 justify-center" id="projects-container">
-    <div class=" w-48 h-24 flex justify-center items-center border-2 border-dashed border-gray-600 rounded cursor-pointer
+  <div class="flex flex-wrap p-5 gap-5 justify-center items-center" id="projects-container">
+    <div class=" w-48 h-32 flex justify-center items-center border-2 border-dashed border-gray-600 rounded cursor-pointer
     text-gray-600 text-2xl transition-colors duration-300 transform order-[999] hover:text-gray-500 hover:scale-105"
       id="add-project">
       <i class='bx bx-plus'></i>
     </div>
   </div>
-  <dialog id="modal-create-project" class="modal">
+  <dialog id="modal-project" class="modal">
     <div class="modal-box">
       <form method="dialog">
         <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
       </form>
       <form id="project-form" class="flex flex-col gap-3 mt-4">
+        <input type="hidden" name="id" value="-1">
         <div>
           <label class="input input-bordered flex items-center gap-2" for="title">Title:
 
@@ -66,7 +67,7 @@
             </select>
           </label>
         </div>
-        <div id="gradientPreview" class="w-full h-8 rounded-md mt-2"></div>
+        <div id="gradientPreview"></div>
         <div>
           <button class="btn btn-active btn-primary" type="submit">Save Project</button>
         </div>

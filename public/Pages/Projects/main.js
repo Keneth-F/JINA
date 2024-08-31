@@ -1,44 +1,86 @@
-import { GetProjects, InsertProject } from "../../data/index.js";
-import { checkSession } from "../checkAuth.js";
-import { createProjectCard } from "./components/projectCard.js";
+import { createProjectCard } from "../../components/projectCard.js";
+import { fetchSessionStatus, logoutUser } from "../../data/auth.data.js";
+import { deleteProject, fetchProjects, upsertProject } from "../../data/projects.data.js";
 
-await checkSession()
+try {
+  const { isAuthenticated, message } = await fetchSessionStatus();
 
-const modal = document.querySelector('#modal-create-project')
-document.querySelector('#logout').addEventListener("click", async () => {
+  if (!isAuthenticated) {
+    window.location.assign('/pages/sign-in');
+  }
+} catch (error) {
+  alert(`Error: ${error.message}`);
+}
+
+const $modal = document.querySelector('#modal-project')
+const $form = $modal.querySelector("#project-form")
+const logoutBtn = document.querySelector('#logout')
+const addProjectBtn = document.querySelector('#add-project')
+const gradientSelect = document.getElementById('gradient')
+const $projectsContainer = document.querySelector("#projects-container")
+
+$modal.addEventListener("close", (event) => { $form.reset() });
+logoutBtn.addEventListener("click", async () => {
   try {
-    const response = await fetch('/auth/logout', {
-      method: 'POST',
-      credentials: 'include'
-    });
-
-    console.log(response)
-    if (response.ok) {
-      window.location.assign('/pages/sign-in');
-    } else {
-      // Manejar errores (ej. credenciales incorrectas)
-      alert('algo salio mal');
-    }
+    await logoutUser()
+    window.location.assign('/');
   } catch (error) {
-    console.error('Error al verificar la sesión:', error);
+    alert(error.message);
   }
 })
-document.querySelector('#add-project').addEventListener("click", () => modal.showModal())
 
-document.getElementById('gradient').addEventListener('change', function () {
-  const gradientPreview = document.getElementById('gradientPreview');
-  const selectedGradient = this.value;
-  gradientPreview.className = `w-full h-8 rounded-md mt-2 ${selectedGradient}`;
+addProjectBtn.addEventListener("click", () => $modal.showModal())
+
+gradientSelect.addEventListener('change', (e) => {
+  const $gradientPreview = document.getElementById('gradientPreview');
+  const selectedGradient = e.target.value;
+  $gradientPreview.className = `w-full h-8 rounded-md mt-2 ${selectedGradient}`;
 });
 
-const projects = await GetProjects()
-document.querySelector("#projects-container").append(...projects.map(({ title, bgColor, id, }) => createProjectCard({ title, bgColor, id })))
+const projects = await fetchProjects()
+
+$projectsContainer.append(...projects.map(createProjectCardElement))
 
 
-modal.querySelector("#project-form").addEventListener("submit", async (event) => {
+$form.addEventListener("submit", async (event) => {
   event.preventDefault()
-  const project = await InsertProject(Object.fromEntries(new FormData(event.target)))
-  console.log(project)
-  document.querySelector("#projects-container").append(createProjectCard(project))
-  modal.close()
+  try {
+    const formData = Object.fromEntries(new FormData(event.target));
+    const newProject = await upsertProject(formData);
+
+    const $existingProject = document.querySelector(`[data-id="${newProject.id}"]`);
+    const $newProjectCard = createProjectCardElement(newProject);
+
+    if ($existingProject) {
+      $projectsContainer.replaceChild($newProjectCard, $existingProject);
+      //TODO replace
+    } else {
+      $projectsContainer.append($newProjectCard);
+      //TODO add
+    }
+    $modal.close();
+  } catch (error) {
+    alert(`Error: ${error.message}`);
+  }
 })
+
+
+function createProjectCardElement(project) {
+  const $project = createProjectCard(project)
+  $project.goButton.href = "project?id=" + project.id
+  $project.editButton.addEventListener("click", (event) => {
+    $form.elements['id'].value = project.id;
+    $form.elements['title'].value = project.title;
+    $form.elements['bgColor'].value = project.bgColor;
+    $modal.showModal()
+  })
+  $project.deleteButton.addEventListener("click", async (event) => {
+    try {
+      await deleteProject(project.id)
+      $project.box.remove()
+    } catch (error) {
+      alert(`Error: ${error.message}`);
+    }
+  })
+  return $project.box
+}

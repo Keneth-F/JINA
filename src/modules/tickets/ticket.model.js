@@ -295,10 +295,11 @@ export class Ticket {
     return ticket
   }
 
-  static async create(data) {
+  static async create({ priority, ...data }) {
     const ticket = {
+      ...data,
       id: tickets.length,
-      ...data
+      label: labels.find((lbl) => priority == lbl.text),
     }
     tickets.push(ticket)
     return ticket
