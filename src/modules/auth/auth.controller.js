@@ -15,13 +15,12 @@ export const register = ({ body }, res, next) => User
 
 export const login = ({ body }, res, next) => User
   .signIn(body)
-  .then((data) => createAccessToken(data))
-  .then((token) =>
-    res.cookie("token", token, {
-      httpOnly: process.env.NODE_ENV !== "development",
-      secure: true,
-      sameSite: "none",
-    }).json({ data })
+  .then((user) => createAccessToken(user))
+  .then((token) => res.cookie("token", token, {
+    httpOnly: process.env.NODE_ENV !== "development",
+    secure: true,
+    sameSite: "none",
+  }).status(200)
   )
   .catch(({ message, status }) => next({ message, status }))
 

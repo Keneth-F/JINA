@@ -1,10 +1,11 @@
-import { GetProjects } from "../../data/index.js";
+import { GetProjects, InsertProject } from "../../data/index.js";
+import { checkSession } from "../checkAuth.js";
 import { createProjectCard } from "./components/projectCard.js";
-document.querySelector('#add-project').addEventListener("click", () => {
-  const modal = document.querySelector('#modal-create-project')
-  modal.showModal()
 
-})
+await checkSession()
+
+const modal = document.querySelector('#modal-create-project')
+document.querySelector('#add-project').addEventListener("click", () => modal.showModal())
 
 document.getElementById('gradient').addEventListener('change', function () {
   const gradientPreview = document.getElementById('gradientPreview');
@@ -14,3 +15,12 @@ document.getElementById('gradient').addEventListener('change', function () {
 
 const projects = await GetProjects()
 document.querySelector("#projects-container").append(...projects.map(({ title, bgColor, id, }) => createProjectCard({ title, bgColor, id })))
+
+
+modal.querySelector("#project-form").addEventListener("submit", async (event) => {
+  event.preventDefault()
+  const project = await InsertProject(Object.fromEntries(new FormData(event.target)))
+  console.log(project)
+  document.querySelector("#projects-container").append(createProjectCard(project))
+  modal.close()
+})

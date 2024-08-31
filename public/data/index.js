@@ -285,6 +285,17 @@ export const GetProjects = async () => {
     ]
 }
 
+export const InsertProject = async ({ title, bgColor }) => {
+    return {
+        id: crypto.randomUUID(),
+        owner: "org-1234",
+        title,
+        bgColor,
+        columns: [],
+        createdAt: new Date(),
+        updatedAt: new Date()
+    }
+}
 export const InsertColumn = async ({ title, order }) => {
     return {
         id: crypto.randomUUID(),

@@ -42,7 +42,7 @@
       <form method="dialog">
         <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
       </form>
-      <form id="projectForm" class="flex flex-col gap-3 mt-4">
+      <form id="project-form" class="flex flex-col gap-3 mt-4">
         <input type="hidden" name="projectId" value="0">
         <div>
           <label class="input input-bordered flex items-center gap-2" for="title">Title:
@@ -51,12 +51,12 @@
           </label>
         </div>
         <div>
-          <label class="form-control w-full max-w" for="stage">
+          <label class="form-control w-full max-w" for="bgColor">
             <div class="label">
               <span class="label-text">Background:</span>
             </div>
 
-            <select class="select select-bordered w-full max-w" id="gradient" required>
+            <select class="select select-bordered w-full max-w" id="gradient" name="bgColor" required>
               <option value="" disabled selected>Select a gradient</option>
               <option value="bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500">Pink to Yellow</option>
               <option value="bg-gradient-to-r from-green-400 to-blue-500">Green to Blue</option>

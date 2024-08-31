@@ -23,7 +23,6 @@
         type="search" placeholder="Search for anything…">
       <div class="ml-10">
         <a class="mx-2 text-sm font-semibold text-indigo-700" href="/pages/projects/">Projects</a>
-        <a class="mx-2 text-sm font-semibold text-gray-600 hover:text-indigo-700" href="#">Team</a>
         <a class="mx-2 text-sm font-semibold text-gray-600 hover:text-indigo-700" href="/pages/activity/">Activity</a>
       </div>
       <div class="dropdown dropdown-end">
@@ -44,73 +43,128 @@
     </div>
     <div id="board-container" class="flex flex-grow px-10 mt-4 space-x-6 overflow-auto">
 
-      <div class="flex-shrink-0 w-6"></div>
+    </div>
+    <div class="flex-shrink-0 w-6"></div>
 
 
+    <dialog id="modal-create-ticket" class="modal">
+      <div class="modal-box">
+        <form method="dialog">
+          <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+        </form>
+        <form id="ticket-form" class="flex flex-col gap-3 mt-4">
+          <div>
+            <label class="input input-bordered flex items-center gap-2" for="title">Title:
 
-      <dialog id="modal-create-ticket" class="modal">
-        <div class="modal-box">
-          <form method="dialog">
-            <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
-          </form>
-          <form id="ticket-form" class="flex flex-col gap-3 mt-4">
-            <div>
-              <label class="input input-bordered flex items-center gap-2" for="title">Title:
+              <input class="grow" type="text" name="title" placeholder="Title" required>
+            </label>
+          </div>
+          <div>
+            <label class="input input-bordered flex items-center gap-2" for="date">Date:
 
-                <input class="grow" type="text" name="title" placeholder="Title" required>
-              </label>
+              <input class="grow" type="date" name="date" required>
+            </label>
+          </div>
+          <div>
+            <label class="form-control w-full max-w" for="priority">
+              <div class="label">
+                <span class="label-text">Priority:</span>
+              </div>
+
+              <select class="select select-bordered w-full max-w" name="priority" required>
+                <option value="high">High</option>
+                <option value="medium">Medium</option>
+                <option value="normal">Normal</option>
+                <option value="low">Low</option>
+              </select>
+            </label>
+          </div>
+          <div>
+            <label class="form-control w-full max-w" for="stage">
+              <div class="label">
+                <span class="label-text">Stage:</span>
+              </div>
+
+              <select class="select select-bordered w-full max-w" name="stage" required>
+
+              </select>
+            </label>
+          </div>
+          <div id="teamMembers">
+            <label>Team Members:</label>
+            <div class="flex items-center gap-2">
+              <input class="input input-bordered w-full max-w-xs" type="email" name="teamMember"
+                placeholder="Enter team member email">
+              <button class="btn btn-outline btn-info" type="button" id="addMemberBtn">Add Team Member</button>
             </div>
-            <div>
-              <label class="input input-bordered flex items-center gap-2" for="date">Date:
+          </div>
+          <ul id="teamList" class="list-disc ml-5 mt-2"></ul>
+          <div>
+            <button class="btn btn-active btn-primary" type="submit">Save Ticket</button>
+          </div>
+        </form>
+      </div>
+      <form method="dialog" class="modal-backdrop">
+        <button>close</button>
+      </form>
+    </dialog>
 
-                <input class="grow" type="date" name="date" required>
-              </label>
-            </div>
-            <div>
-              <label class="form-control w-full max-w" for="priority">
-                <div class="label">
-                  <span class="label-text">Priority:</span>
+    <dialog id="modal-update-ticket" class="modal">
+      <div class="modal-box">
+        <form method="dialog">
+          <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+        </form>
+        <div className="grid grid-cols-1 md:grid-cols-4 md:gap-4">
+          <div className="col-span-3">
+            <div className="w-full space-y-6">
+              <div className="flex items-start gap-x-3 w-full">
+                <div className="h-5 w-5 mt-0.5 text-neutral-700">icon</div>
+                <div className="w-full">
+                  <p className="font-semibold text-neutral-700 mb-2">Description</p>
+                  <textarea id="description" name="description" className="w-full mt-2"
+                    placeholder="Add a more detailed description"></textarea>
+                  <div className="flex items-center gap-x-2">
+                    <button>Save</button>
+                    <Button type="button">
+                      Cancel
+                    </Button>
+                  </div>
+
+                  <div role="button" className="min-h-[78px] bg-neutral-200 text-sm font-medium py-3 px-3.5 rounded-md">
+                    "Add a more detailed description...
+                  </div>
                 </div>
-
-                <select class="select select-bordered w-full max-w" name="priority" required>
-                  <option value="high">High</option>
-                  <option value="medium">Medium</option>
-                  <option value="normal">Normal</option>
-                  <option value="low">Low</option>
-                </select>
-              </label>
-            </div>
-            <div>
-              <label class="form-control w-full max-w" for="stage">
-                <div class="label">
-                  <span class="label-text">Stage:</span>
+              </div>
+              <div className="flex items-start gap-x-3 w-full">
+                activity
+                <div className="w-full">
+                  <p className="font-semibold text-neutral-700 mb-2">Activity</p>
+                  <ol className="mt-2 space-y-4">
+                    activity
+                  </ol>
                 </div>
-
-                <select class="select select-bordered w-full max-w" name="stage" required>
-
-                </select>
-              </label>
-            </div>
-            <div id="teamMembers">
-              <label>Team Members:</label>
-              <div class="flex items-center gap-2">
-                <input class="input input-bordered w-full max-w-xs" type="email" name="teamMember"
-                  placeholder="Enter team member email">
-                <button class="btn btn-outline btn-info" type="button" id="addMemberBtn">Add Team Member</button>
               </div>
             </div>
-            <ul id="teamList" class="list-disc ml-5 mt-2"></ul>
-            <div>
-              <button class="btn btn-active btn-primary" type="submit">Save Ticket</button>
-            </div>
-          </form>
+          </div>
+          <div className="space-y-2 mt-2">
+            <p className="text-xs font-semibold">Actions</p>
+            <Button className="w-full justify-start">
+              icon
+              Copy
+            </Button>
+            <Button className="w-full justify-start" size="inline">
+              icon
+              Delete
+            </Button>
+          </div>
         </div>
-        <form method="dialog" class="modal-backdrop">
-          <button>close</button>
-        </form>
-      </dialog>
+      </div>
+      <form method="dialog" class="modal-backdrop">
+        <button>close</button>
+      </form>
+    </dialog>
 
-      <script src="main.js" type="module"></script>
+    <script src="main.js" type="module"></script>
 </body>
 
 </html>

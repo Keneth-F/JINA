@@ -6,8 +6,6 @@ import './addTicketForm.js'
 import { getCurrentProject } from "./getCurrentProject.js";
 
 const { project, user } = await getCurrentProject()
-if (!user) console.error('User not found');
-if (!project) console.error('Project not found');
 
 const modal = document.querySelector('#modal-create-ticket')
 const board = document.querySelector('#board-container')
@@ -82,6 +80,9 @@ function populateCardData({ attachments, comments, date, label, team, title, id 
     DeleteBtn.addEventListener("click", (e) => {
         onDelete(id)
         card.remove()
+    })
+    card.addEventListener("click", () => {
+        document.querySelector("#modal-update-ticket").showModal()
     })
     return card
 }

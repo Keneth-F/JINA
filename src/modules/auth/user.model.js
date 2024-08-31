@@ -14,9 +14,9 @@ export class User {
     }
     static async signIn({ email, password }) {
         const user = users.find(user => user.email == email)
-        if (!user)
-            throw { status: 400, message: "The email does not exist" }
-        return user
+        // if (!user)
+        //     throw { status: 400, message: "The email does not exist" }
+        return Promise.resolve({ email })
     };
     static async signOut({ email, password }) {
         return null

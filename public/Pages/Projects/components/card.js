@@ -69,7 +69,7 @@ export function createCard({ label, title, date, comments, attachments, team, id
       </svg>
       <span class="ml-1 leading-none">${date}</span>
   `;
-    detailsDiv.appendChild(dateDiv);
+    // detailsDiv.appendChild(dateDiv);
 
     const commentsDiv = document.createElement('div');
     commentsDiv.className = 'relative flex items-center ml-4';
@@ -79,7 +79,7 @@ export function createCard({ label, title, date, comments, attachments, team, id
       </svg>
       <span class="ml-1 leading-none">${comments}</span>
   `;
-    detailsDiv.appendChild(commentsDiv);
+    // detailsDiv.appendChild(commentsDiv);
 
     const attachmentsDiv = document.createElement('div');
     attachmentsDiv.className = 'flex items-center ml-4';
@@ -89,7 +89,7 @@ export function createCard({ label, title, date, comments, attachments, team, id
       </svg>
       <span class="ml-1 leading-none">${attachments}</span>
   `;
-    detailsDiv.appendChild(attachmentsDiv);
+    // detailsDiv.appendChild(attachmentsDiv);
 
     const avatarGroup = createTeamAvatars(team);
     detailsDiv.appendChild(avatarGroup);
