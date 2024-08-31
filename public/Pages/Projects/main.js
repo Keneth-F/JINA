@@ -5,6 +5,24 @@ import { createProjectCard } from "./components/projectCard.js";
 await checkSession()
 
 const modal = document.querySelector('#modal-create-project')
+document.querySelector('#logout').addEventListener("click", async () => {
+  try {
+    const response = await fetch('/auth/logout', {
+      method: 'POST',
+      credentials: 'include'
+    });
+
+    console.log(response)
+    if (response.ok) {
+      window.location.assign('/pages/sign-in');
+    } else {
+      // Manejar errores (ej. credenciales incorrectas)
+      alert('algo salio mal');
+    }
+  } catch (error) {
+    console.error('Error al verificar la sesión:', error);
+  }
+})
 document.querySelector('#add-project').addEventListener("click", () => modal.showModal())
 
 document.getElementById('gradient').addEventListener('change', function () {

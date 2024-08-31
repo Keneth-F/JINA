@@ -16,310 +16,93 @@ const labels = [
         bgColor: 'bg-info'
     }]
 export const GetProjects = async () => {
-    return [
-        {
-            "id": "b1a2b3c4-d5e6-f7g8-h9i0-j1k2l3m4n5o6",
-            "owner": "org-1234",
-            "title": "Project Management Board",
-            "bgColor": "bg-gradient-to-tr from-blue-200 via-indigo-200 to-pink-200",
-            "columns": [
-                {
-                    "id": "l1a2b3c4-d5e6-f7g8-h9i0-j1k2l3m4n5o6",
-                    "title": "To Do",
-                    "order": 1,
-                    "boardId": "b1a2b3c4-d5e6-f7g8-h9i0-j1k2l3m4n5o6",
-                    "cards": [
-                        {
-                            "id": "c1a2b3c4-d5e6-f7g8-h9i0-j1k2l3m4n5o6",
-                            "title": "Design Landing Page",
-                            "order": 1,
-                            "description": "Create a mockup for the landing page",
-                            "label": labels[Math.floor(Math.random() * labels.length)],
-                            "date": 'Dec 12',
-                            "comments": Math.floor(Math.random() * 10),
-                            "attachments": Math.floor(Math.random() * 2),
-                            "team": [
-                                { "avatar": 'https://randomuser.me/api/portraits/women/26.jpg' },
-                                { "avatar": 'https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp' },
-                                { "avatar": 'https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp' },
-                                { "avatar": 'https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp' },
-                                { "avatar": 'https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp' },
-                                { "avatar": 'https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp' }
-                            ].slice(0, Math.floor(Math.random() * 6) + 1)
-                        },
-                        {
-                            "id": "c2b3c4d5-e6f7-g8h9-i0j1-k2l3m4n5o6p7",
-                            "title": "Set up Database",
-                            "order": 2,
-                            "description": "Initialize the database schema and tables",
-                            "label": labels[Math.floor(Math.random() * labels.length)],
-                            "date": 'Dec 12',
-                            "comments": Math.floor(Math.random() * 10),
-                            "attachments": Math.floor(Math.random() * 2),
-                            "team": [
-                                { "avatar": 'https://randomuser.me/api/portraits/women/26.jpg' },
-                                { "avatar": 'https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp' },
-                                { "avatar": 'https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp' },
-                                { "avatar": 'https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp' },
-                                { "avatar": 'https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp' },
-                                { "avatar": 'https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp' }
-                            ].slice(0, Math.floor(Math.random() * 6) + 1)
-                        }
-                    ],
-                    "createdAt": "2024-08-29T10:15:30Z",
-                    "updatedAt": "2024-08-29T12:20:45Z"
-                },
-                {
-                    "id": "l2b3c4d5-e6f7-g8h9-i0j1-k2l3m4n5o6p7",
-                    "title": "In Progress",
-                    "order": 2,
-                    "boardId": "b1a2b3c4-d5e6-f7g8-h9i0-j1k2l3m4n5o6",
-                    "cards": [
-                        {
-                            "id": "c3b4c5d6-e7f8-g9h0-i1j2-k3l4m5n6o7p8",
-                            "title": "Develop Authentication",
-                            "order": 1,
-                            "description": "Implement user authentication using JWT",
-                            "label": labels[Math.floor(Math.random() * labels.length)],
-                            "date": 'Dec 12',
-                            "comments": Math.floor(Math.random() * 10),
-                            "attachments": Math.floor(Math.random() * 2),
-                            "team": [
-                                { "avatar": 'https://randomuser.me/api/portraits/women/26.jpg' },
-                                { "avatar": 'https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp' },
-                                { "avatar": 'https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp' },
-                                { "avatar": 'https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp' },
-                                { "avatar": 'https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp' },
-                                { "avatar": 'https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp' }
-                            ].slice(0, Math.floor(Math.random() * 6) + 1)
-                        }
-                    ],
-                    "createdAt": "2024-08-29T10:20:00Z",
-                    "updatedAt": "2024-08-29T12:30:15Z"
-                },
-                {
-                    "id": "l3c4d5e6-f7g8-h9i0-j1k2-l3m4n5o6p7q8",
-                    "title": "Ideas",
-                    "order": 1,
-                    "boardId": "b2c3d4e5-f6g7-h8i9-j0k1-l2m3n4o5p6q7",
-                    "cards": [
-                        {
-                            "id": "c4d5e6f7-g8h9-i0j1-k2l3-m4n5o6p7q8r9",
-                            "title": "Social Media Plan",
-                            "order": 1,
-                            "description": "Draft a social media strategy",
-                            "label": labels[Math.floor(Math.random() * labels.length)],
-                            "date": 'Dec 12',
-                            "comments": Math.floor(Math.random() * 10),
-                            "attachments": Math.floor(Math.random() * 2),
-                            "team": [
-                                { "avatar": 'https://randomuser.me/api/portraits/women/26.jpg' },
-                                { "avatar": 'https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp' },
-                                { "avatar": 'https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp' },
-                                { "avatar": 'https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp' },
-                                { "avatar": 'https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp' },
-                                { "avatar": 'https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp' }
-                            ].slice(0, Math.floor(Math.random() * 6) + 1)
-                        },
-                        {
-                            "id": "c5e6f7g8-h9i0-j1k2-l3m4-n5o6p7q8r9s0",
-                            "title": "Ad Campaign Concept",
-                            "order": 2,
-                            "description": "Brainstorm ideas for the new ad campaign",
-                            "label": labels[Math.floor(Math.random() * labels.length)],
-                            "date": 'Dec 12',
-                            "comments": Math.floor(Math.random() * 10),
-                            "attachments": Math.floor(Math.random() * 2),
-                            "team": [
-                                { "avatar": 'https://randomuser.me/api/portraits/women/26.jpg' },
-                                { "avatar": 'https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp' },
-                                { "avatar": 'https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp' },
-                                { "avatar": 'https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp' },
-                                { "avatar": 'https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp' },
-                                { "avatar": 'https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp' }
-                            ].slice(0, Math.floor(Math.random() * 6) + 1)
-                        }
-                    ],
-                    "createdAt": "2024-08-29T11:10:00Z",
-                    "updatedAt": "2024-08-29T11:50:00Z"
-                },
-                {
-                    "id": "l4d5e6f7-g8h9-i0j1-k2l3-m4n5o6p7q8r9",
-                    "title": "Execution",
-                    "order": 2,
-                    "boardId": "b2c3d4e5-f6g7-h8i9-j0k1-l2m3n4o5p6q7",
-                    "cards": [
-                        {
-                            "id": "c6f7g8h9-i0j1-k2l3-m4n5-o6p7q8r9s0t1",
-                            "title": "Launch Website",
-                            "order": 1,
-                            "description": "Deploy the marketing website",
-                            "label": labels[Math.floor(Math.random() * labels.length)],
-                            "date": 'Dec 12',
-                            "comments": Math.floor(Math.random() * 10),
-                            "attachments": Math.floor(Math.random() * 2),
-                            "team": [
-                                { "avatar": 'https://randomuser.me/api/portraits/women/26.jpg' },
-                                { "avatar": 'https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp' },
-                                { "avatar": 'https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp' },
-                                { "avatar": 'https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp' },
-                                { "avatar": 'https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp' },
-                                { "avatar": 'https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp' }
-                            ].slice(0, Math.floor(Math.random() * 6) + 1)
-                        }
-                    ],
-                    "createdAt": "2024-08-29T11:20:00Z",
-                    "updatedAt": "2024-08-29T12:00:00Z"
-                },
-                {
-                    "id": "l5e6f7g8-h9i0-j1k2-l3m4-n5o6p7q8r9s0",
-                    "title": "Completed",
-                    "order": 3,
-                    "boardId": "b1a2b3c4-d5e6-f7g8-h9i0-j1k2l3m4n5o6",
-                    "cards": [
-                        {
-                            "id": "c7g8h9i0-j1k2-l3m4-n5o6-p7q8r9s0t1u2",
-                            "title": "Final Review",
-                            "order": 1,
-                            "description": "Conduct a final review of the project",
-                            "label": labels[Math.floor(Math.random() * labels.length)],
-                            "date": 'Dec 12',
-                            "comments": Math.floor(Math.random() * 10),
-                            "attachments": Math.floor(Math.random() * 2),
-                            "team": [
-                                { "avatar": 'https://randomuser.me/api/portraits/women/26.jpg' },
-                                { "avatar": 'https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp' },
-                                { "avatar": 'https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp' },
-                                { "avatar": 'https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp' },
-                                { "avatar": 'https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp' },
-                                { "avatar": 'https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp' }
-                            ].slice(0, Math.floor(Math.random() * 6) + 1)
-                        }
-                    ],
-                    "createdAt": "2024-08-29T12:30:00Z",
-                    "updatedAt": "2024-08-29T13:00:00Z"
-                }
-            ]
-            ,
-            "createdAt": "2024-08-29T10:15:30Z",
-            "updatedAt": "2024-08-29T12:20:45Z"
-        },
-        {
-            "id": "b2c3d4e5-f6g7-h8i9-j0k1-l2m3n4o5p6q7",
-            "owner": "org-1234",
-            "title": "Marketing Campaign",
-            "bgColor": 'bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500',
-            "columns": [
-                {
-                    "id": "l3c4d5e6-f7g8-h9i0-j1k2-l3m4n5o6p7q8",
-                    "title": "Ideas",
-                    "order": 1,
-                    "cards": [
-                        {
-                            "id": "c4d5e6f7-g8h9-i0j1-k2l3-m4n5o6p7q8r9",
-                            "title": "Social Media Plan",
-                            "order": 1,
-                            "description": "Draft a social media strategy",
-                            "label": labels[Math.floor(Math.random() * labels.length)],
-                            "date": 'Dec 12',
-                            "comments": Math.floor(Math.random() * 10),
-                            "attachments": Math.floor(Math.random() * 2),
-                            "team": [
-                                { "avatar": 'https://randomuser.me/api/portraits/women/26.jpg' },
-                                { "avatar": 'https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp' },
-                                { "avatar": 'https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp' },
-                                { "avatar": 'https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp' },
-                                { "avatar": 'https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp' },
-                                { "avatar": 'https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp' }
-                            ].slice(0, Math.floor(Math.random() * 6) + 1)
-                        },
-                        {
-                            "id": "c5e6f7g8-h9i0-j1k2-l3m4-n5o6p7q8r9s0",
-                            "title": "Ad Campaign Concept",
-                            "order": 2,
-                            "description": "Brainstorm ideas for the new ad campaign",
-                            "label": labels[Math.floor(Math.random() * labels.length)],
-                            "date": 'Dec 12',
-                            "comments": Math.floor(Math.random() * 10),
-                            "attachments": Math.floor(Math.random() * 2),
-                            "team": [
-                                { "avatar": 'https://randomuser.me/api/portraits/women/26.jpg' },
-                                { "avatar": 'https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp' },
-                                { "avatar": 'https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp' },
-                                { "avatar": 'https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp' },
-                                { "avatar": 'https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp' },
-                                { "avatar": 'https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp' }
-                            ].slice(0, Math.floor(Math.random() * 6) + 1)
-                        }
-                    ]
-                },
-                {
-                    "id": "l4d5e6f7-g8h9-i0j1-k2l3-m4n5o6p7q8r9",
-                    "title": "Execution",
-                    "order": 2,
-                    "cards": [
-                        {
-                            "id": "c6f7g8h9-i0j1-k2l3-m4n5-o6p7q8r9s0t1",
-                            "title": "Launch Website",
-                            "order": 1,
-                            "description": "Deploy the marketing website",
-                            "label": labels[Math.floor(Math.random() * labels.length)],
-                            "date": 'Dec 12',
-                            "comments": Math.floor(Math.random() * 10),
-                            "attachments": Math.floor(Math.random() * 2),
-                            "team": [
-                                { "avatar": 'https://randomuser.me/api/portraits/women/26.jpg' },
-                                { "avatar": 'https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp' },
-                                { "avatar": 'https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp' },
-                                { "avatar": 'https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp' },
-                                { "avatar": 'https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp' },
-                                { "avatar": 'https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp' }
-                            ].slice(0, Math.floor(Math.random() * 6) + 1)
-                        }
-                    ]
-                }
-            ],
-            "createdAt": "2024-08-29T11:00:00Z",
-            "updatedAt": "2024-08-29T13:30:15Z"
+    try {
+        const response = await fetch('/project/', {
+            method: 'GET',
+            credentials: 'include'
+        });
+
+        if (response.ok) {
+            const { data } = await response.json()
+            console.log(data)
+            return data
+        } else {
+            // Manejar errores (ej. credenciales incorrectas)
+            alert('Nombre de usuario o contraseña inválidos');
+            return []
         }
-    ]
-}
-
-export const InsertProject = async ({ title, bgColor }) => {
-    return {
-        id: crypto.randomUUID(),
-        owner: "org-1234",
-        title,
-        bgColor,
-        columns: [],
-        createdAt: new Date(),
-        updatedAt: new Date()
+    } catch (error) {
+        console.error('Error al verificar la sesión:', error);
+        return []
     }
 }
-export const InsertColumn = async ({ title, order }) => {
-    return {
-        id: crypto.randomUUID(),
-        title,
-        order,
-        boardId: "b1a2b3c4-d5e6-f7g8-h9i0-j1k2l3m4n5o6",
-        cards: [],
-        createdAt: new Date(),
-        updatedAt: new Date()
+
+export const InsertProject = async (data) => {
+    try {
+        const response = await fetch('/project/', {
+            method: 'POST',
+            credentials: 'include',
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data),
+        });
+
+        if (response.ok) {
+            const { data } = await response.json()
+            return data
+        } else {
+            // Manejar errores (ej. credenciales incorrectas)
+            alert('Nombre de usuario o contraseña inválidos');
+            return []
+        }
+    } catch (error) {
+        console.error('Error al verificar la sesión:', error);
+        return []
+    }
+}
+export const InsertColumn = async (data) => {
+    try {
+        const response = await fetch('/scene/', {
+            method: 'POST',
+            credentials: 'include',
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data),
+        });
+
+        if (response.ok) {
+            const { data } = await response.json()
+            return data
+        } else {
+            // Manejar errores (ej. credenciales incorrectas)
+            alert('Nombre de usuario o contraseña inválidos');
+            return []
+        }
+    } catch (error) {
+        console.error('Error al verificar la sesión:', error);
+        return []
     }
 
 }
 
-export const InsertCard = async ({ title, order, description, priority, date, team, stage }) => {
-    return {
-        id: crypto.randomUUID(),
-        title,
-        order,
-        description,
-        label: labels.find((lbl) => lbl.text == priority),
-        date,
-        comments: Math.floor(Math.random() * 10),
-        attachments: Math.floor(Math.random() * 2),
-        team
+export const InsertCard = async (data) => {
+    try {
+        const response = await fetch('/ticket/', {
+            method: 'POST',
+            credentials: 'include',
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data),
+        });
+
+        if (response.ok) {
+            const { data } = await response.json()
+            return data
+        } else {
+            // Manejar errores (ej. credenciales incorrectas)
+            alert('Nombre de usuario o contraseña inválidos');
+            return []
+        }
+    } catch (error) {
+        console.error('Error al verificar la sesión:', error);
+        return []
     }
 
 }

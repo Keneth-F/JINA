@@ -6,6 +6,7 @@ export async function getCurrentProject() {
   const projectId = new URLSearchParams(location.search).get("id");
 
   const project = projects.find(project => project.id == projectId);
+  console.log(project)
   const user = await checkSession();
 
   if (!user) console.error('User not found');

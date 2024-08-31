@@ -1,25 +1,26 @@
-const users = [
-    {
-        email: "kgf@email.com"
-    }
-]
+const users = [{ email: 'test@example.us' }]
 
 export class User {
-    static async signUp({ username, email, password }) {
-        const user = users.find(user => user.email == email)
+    static async signUp({ email }) {
+        const user = users.find(user => user?.email == email)
         if (user)
             throw { status: 400, message: "The email is already in use" }
-        users.push(user)
-        return user
+        users.push({ email })
+        return Promise.resolve({ email })
     }
-    static async signIn({ email, password }) {
+    static async signIn({ email }) {
+
         const user = users.find(user => user.email == email)
-        // if (!user)
-        //     throw { status: 400, message: "The email does not exist" }
+        console.log(users, user, email)
+        if (!user)
+            throw { status: 400, message: "The email does not exist" }
         return Promise.resolve({ email })
     };
-    static async signOut({ email, password }) {
-        return null
+    static async signOut({ email }) {
+        const userIndex = users.findIndex(user => user.email == email)
+        if (userIndex != -1)
+            users.splice(userIndex, 1)
+        return Promise.resolve(null)
     };
 
 }

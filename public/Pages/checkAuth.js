@@ -6,6 +6,7 @@ export async function checkSession() {
     });
 
     if (!response.ok) {
+      console.log(await response.text())
       window.location.assign('/pages/sign-in');
     }
     const res = await response.json()
@@ -23,6 +24,8 @@ export async function checkAlreadySession() {
     });
 
     if (response.ok) {
+      console.log(await response.text())
+
       window.location.assign('/pages/projects');
     } else {
       // Manejar errores (ej. credenciales incorrectas)

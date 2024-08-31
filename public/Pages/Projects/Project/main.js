@@ -18,11 +18,11 @@ function initializeBoard() {
     Sortable.create(board, { animation: 150, draggable: "[data-column-id]" })
     document.querySelector("#main").className += project.bgColor;
     document.querySelector("#board-title").textContent = project.title;
-    const orderedColumns = project.columns.sort((a, b) => a.order - b.order)
+    const orderedColumns = project.scenes.sort((a, b) => a.order - b.order)
     orderedColumns.forEach(populateColumnData);
 }
 
-function populateColumnData({ id, title, cards }) {
+function populateColumnData({ id, title, tickets }) {
     const option = document.createElement("option");
     option.value = id;
     option.textContent = title;
@@ -31,32 +31,32 @@ function populateColumnData({ id, title, cards }) {
     const { column, cardContainer, addButton, deleteButton } = createColumn({ title, id })
 
     deleteButton.addEventListener("click", (evt) => {
-        const currentColumn = project.columns.find((column) => column.id == id)
-        project.columns = project.columns.filter((_column) => _column.id != currentColumn.id)
-        console.log(project.columns)
+        const currentColumn = project.scenes.find((column) => column.id == id)
+        project.scenes = project.scenes.filter((_column) => _column.id != currentColumn.id)
+        console.log(project.scenes)
         column.remove()
     })
 
     const onDeleteCard = (cardId) => {
-        const previousColumn = project.columns.find((column) => column.cards.find((card) => card.id == cardId && column.id == id)) ?? project.columns.find((column) => column.cards.find((card) => card.id == cardId))
-        const card = previousColumn.cards.find((card) => card.id == cardId)
-        previousColumn.cards = previousColumn.cards.filter((_card) => _card.id != card.id)
+        const previousColumn = project.scenes.find((column) => column.tickets.find((card) => card.id == cardId && column.id == id)) ?? project.scenes.find((column) => column.tickets.find((card) => card.id == cardId))
+        const card = previousColumn.tickets.find((card) => card.id == cardId)
+        previousColumn.tickets = previousColumn.tickets.filter((_card) => _card.id != card.id)
     }
 
 
 
     const onDroppedCard = (evt) => {
-        const previousColumn = project.columns.find((column) => column.cards.find((card) => card.id == evt.item.dataset.id))
-        const card = previousColumn.cards.find((card) => card.id == evt.item.dataset.id)
-        const currentColumn = project.columns.find((column) => column.id == id)
-        currentColumn.cards.push(card)
+        const previousColumn = project.scenes.find((column) => column.tickets.find((card) => card.id == evt.item.dataset.id))
+        const card = previousColumn.tickets.find((card) => card.id == evt.item.dataset.id)
+        const currentColumn = project.scenes.find((column) => column.id == id)
+        currentColumn.tickets.push(card)
     }
 
     Sortable.create(cardContainer, {
         group: "shared", animation: 150, onAdd: onDroppedCard, onRemove: (evt) => onDeleteCard(evt.item.dataset.id)
     })
 
-    const orderedCards = cards.sort((a, b) => a.order - b.order)
+    const orderedCards = tickets.sort((a, b) => a.order - b.order)
     orderedCards.forEach((card) => cardContainer.append(populateCardData(card, onDeleteCard)))
 
     addButton.addEventListener('click', () => {
@@ -65,10 +65,10 @@ function populateColumnData({ id, title, cards }) {
         modal.querySelector("#ticket-form").onsubmit = async (event) => {
             event.preventDefault()
             const tmp = { ...Object.fromEntries(new FormData(event.target)) }
-            const currentColumn = project.columns.find((column) => column.id == tmp.stage)
+            const currentColumn = project.scenes.find((column) => column.id == tmp.stage)
             const team = [...modal.querySelectorAll("li")].map(li => ({ avatar: li.textContent }))
-            const card = await InsertCard({ ...tmp, team, order: currentColumn.cards.length })
-            currentColumn.cards.push(card)
+            const card = await InsertCard({ ...tmp, team, order: currentColumn.tickets.length })
+            currentColumn.tickets.push(card)
             cardContainer.append(populateCardData(card, () => onDeleteCard(card.id)))
             modal.close()
         }
@@ -97,8 +97,8 @@ function onAddColumn() {
     board.insertBefore(inputContainer, BtnCreateColumnContainer);
     input.focus();
     input.addEventListener('blur', async (e) => {
-        const column = await InsertColumn({ title: input.value, order: project.columns.length })
-        project.columns.push(column)
+        const column = await InsertColumn({ title: input.value, order: project.scenes.length })
+        project.scenes.push(column)
         inputContainer.remove()
         populateColumnData(column)
     });
@@ -113,7 +113,7 @@ function onAddColumn() {
 // modal.querySelector("#ticket-form").addEventListener("submit", async (event) => {
 //     event.preventDefault()
 //     const tmp = { ...Object.fromEntries(new FormData(event.target)) }
-//     const currentColumn = project.columns.find((column) => column.id == tmp.stage)
+//     const currentColumn = project.scenes.find((column) => column.id == tmp.stage)
 //     const team = [...modal.querySelectorAll("li")].map(li => ({ avatar: li.textContent }))
 //     const card = await InsertCard({ ...tmp, team, order: currentColumn.cards.length })
 //     currentColumn.cards.push(card)

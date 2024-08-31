@@ -75,6 +75,7 @@
 
       if (response.ok) {
         // Redirigir al usuario a la página principal o dashboard
+        console.log(await response.json())
         window.location.assign('/pages/projects');
       } else {
         // Manejar errores (ej. credenciales incorrectas)
