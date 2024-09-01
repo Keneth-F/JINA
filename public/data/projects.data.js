@@ -29,7 +29,6 @@ export const upsertProject = async (data) => {
 
     const result = await response.json();
     if (!response.ok) throw result;
-    console.log(result.data)
     return result.data;
   } catch (error) {
     console.error('Error durante la operación upsert del proyecto:', error);

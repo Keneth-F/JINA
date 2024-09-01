@@ -6,9 +6,10 @@ export const register = ({ body }, res, next) => User
   .then((user) => createAccessToken(user))
   .then((token) => {
     return res.cookie("token", token, {
-      httpOnly: process.env.NODE_ENV !== "development",
-      secure: true,
-      sameSite: "none",
+      httpOnly: true,
+      secure: process.env.NODE_ENV == 'production',
+      sameSite: "strict",
+      maxAge: 1000 * 60 * 60 * 24
     }).sendStatus(200)
   }
   )
@@ -20,9 +21,10 @@ export const login = ({ body }, res, next) => User
   .then((token) => {
     console.log(token)
     res.cookie("token", token, {
-      httpOnly: process.env.NODE_ENV !== "development",
-      secure: true,
-      sameSite: "none",
+      httpOnly: true,
+      secure: process.env.NODE_ENV == 'production',
+      sameSite: "strict",
+      maxAge: 1000 * 60 * 60 * 24
     }).sendStatus(200)
   }
   )

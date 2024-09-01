@@ -20,3 +20,20 @@ export const upsertCard = async (data) => {
   }
 }
 
+export const deleteCard = async (id) => {
+  try {
+    const response = await fetch(`/ticket/${id}`, {
+      method: 'DELETE',
+      credentials: 'include'
+    });
+
+    const result = await response.json();
+    if (!response.ok) throw result;
+
+    return result.data;
+  } catch (error) {
+    console.error(`Error durante la eliminación de la tarjeta con ID ${id}:`, error);
+    throw new Error('Error during card deletion');
+  }
+}
+

@@ -13,7 +13,7 @@ function createTeamAvatars(team) {
         placeholderInnerDiv.className = 'bg-neutral text-neutral-content size-6';
 
         const span = document.createElement('span');
-        span.textContent = member.avatar.slice(-12, -10);
+        span.textContent = member.email.slice(-12, -10);
 
         placeholderInnerDiv.appendChild(span);
         placeholderDiv.appendChild(placeholderInnerDiv);
@@ -56,23 +56,22 @@ export function createCard({ label, title, date, comments, attachments, team, id
     dropdownButton.innerHTML = '<i class="bx bx-dots-vertical-rounded" ></i>';
 
     const dropdownMenu = document.createElement('ul');
-    dropdownMenu.className = 'menu dropdown-content bg-base-100 rounded-sm z-[1] mt-4 shadow';
+    dropdownMenu.className = 'menu dropdown-content bg-base-100 rounded-md z-[1] mt-4 shadow';
     dropdownMenu.setAttribute('tabindex', '0');
 
     // Crear ítems del dropdown de manera iterativa
-    [
+    const actions = [
         { text: 'Edit' },
         { text: 'Delete' },
-        { text: 'Move' }
-    ].forEach(item => {
+    ].map(item => {
         const listItem = document.createElement('li');
         const span = document.createElement('span');
         span.className = "text-xs px-2 py-1"
         span.textContent = item.text;
         listItem.appendChild(span);
-        dropdownMenu.appendChild(listItem);
+        return listItem
     });
-
+    dropdownMenu.append(...actions);
     dropdown.appendChild(dropdownButton);
     dropdown.appendChild(dropdownMenu);
 
@@ -96,5 +95,5 @@ export function createCard({ label, title, date, comments, attachments, team, id
 
     card.appendChild(detailsDiv);
 
-    return { card, button: dropdownButton, dropdown, labelSpan, titleElement };
+    return { card, btnEdit: actions[0], btnDelete: actions[1], dropdown, labelSpan, titleElement };
 }

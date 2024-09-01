@@ -53,10 +53,11 @@ $form.addEventListener("submit", async (event) => {
 
     if ($existingProject) {
       $projectsContainer.replaceChild($newProjectCard, $existingProject);
-      //TODO replace
+      const index = projects.findIndex(project => project.id === newProject.id);
+      projects.splice(index, 1, newProject)
     } else {
       $projectsContainer.append($newProjectCard);
-      //TODO add
+      projects.push(newProject)
     }
     $modal.close();
   } catch (error) {

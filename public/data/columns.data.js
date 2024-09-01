@@ -1,7 +1,10 @@
-export const insertColumn = async (data) => {
+export const upsertColumn = async (data) => {
   try {
-    const response = await fetch('/scene/', {
-      method: 'POST',
+    const method = id >= 0 ? 'PUT' : 'POST';
+    const url = id >= 0 ? `/scene/${id}` : '/scene/';
+
+    const response = await fetch(url, {
+      method,
       credentials: 'include',
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
@@ -12,10 +15,11 @@ export const insertColumn = async (data) => {
 
     return result.data;
   } catch (error) {
-    console.error('Error durante la inserción de la columna:', error);
-    throw new Error('Error during column insertion');
+    console.error(`Error durante la ${id ? 'actualización' : 'inserción'} de la columna:`, error);
+    throw new Error(`Error during column ${id ? 'update' : 'insertion'}`);
   }
 }
+
 
 export const deleteColumn = async (id) => {
   try {

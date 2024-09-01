@@ -9,3 +9,21 @@ export async function createAccessToken(payload) {
     });
   });
 }
+
+export const selectedLabel = (text) => [
+  {
+    text: "high",
+    bgColor: 'bg-error'
+  },
+  {
+    text: "medium",
+    bgColor: 'bg-warning'
+  },
+  {
+    text: "normal",
+    bgColor: 'bg-success'
+  },
+  {
+    text: "low",
+    bgColor: 'bg-info'
+  }].find((lbl) => lbl.text = text)

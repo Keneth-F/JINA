@@ -2,6 +2,9 @@ TODO projects add at the end
 TODO check exist htmlelement
 TODO try catch para todo
 TODO delete date to auto
+TODO refresh token
+TODO inmutable
+TODO change alerts
 
 export const productiveList = [
 {

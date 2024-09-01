@@ -13,8 +13,8 @@ export class Scene {
 
   static async create({ user, ...data }) {
     const scene = {
-      id: scenes.length,
       ...data,
+      id: scenes.length,
       tickets: []
     }
     scenes.push(scene)
@@ -23,14 +23,14 @@ export class Scene {
 
   static async delete({ id }) {
     const sceneIndex = scenes.findIndex(scene => scene.id == id)
-    if (sceneIndex === -1) return false
+    if (sceneIndex === -1) throw { message: "Not found, scene doesn't exists", status: 404 }
     scenes.splice(sceneIndex, 1)
     return true
   }
 
   static async update({ id, data }) {
     const sceneIndex = scenes.findIndex(scene => scene.id == id)
-    if (sceneIndex === -1) return false
+    if (sceneIndex === -1) throw { message: "Not found, scene doesn't exists", status: 404 }
     scenes[sceneIndex] = {
       ...scenes[sceneIndex],
       ...data
