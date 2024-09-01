@@ -1,7 +1,7 @@
 export const upsertCard = async (data) => {
   try {
     const method = data.id != -1 ? 'PUT' : 'POST';
-    const url = data.id != -1 ? `/ticket/${id}` : '/ticket/';
+    const url = data.id != -1 ? `/ticket/${data.id}` : '/ticket/';
 
     const response = await fetch(url, {
       method,
@@ -15,8 +15,8 @@ export const upsertCard = async (data) => {
 
     return result.data;
   } catch (error) {
-    console.error(`Error durante la ${id ? 'actualización' : 'inserción'} de la tarjeta:`, error);
-    throw new Error(`Error during card ${id ? 'update' : 'insertion'}`);
+    console.error(`Error durante la ${data.id ? 'actualización' : 'inserción'} de la tarjeta:`, error);
+    throw new Error(`Error during card ${data.id ? 'update' : 'insertion'}`);
   }
 }
 
