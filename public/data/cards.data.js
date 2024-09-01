@@ -12,7 +12,8 @@ export const upsertCard = async (data) => {
 
     const result = await response.json();
     if (!response.ok) throw result;
-
+    const [user, ...team] = result.data.team
+    result.data.team = team
     return result.data;
   } catch (error) {
     console.error(`Error durante la ${data.id ? 'actualización' : 'inserción'} de la tarjeta:`, error);

@@ -31,9 +31,9 @@ export function createColumn({ title, id }) {
 
     const cardContainer = document.createElement('div');
     cardContainer.className = 'flex flex-col pb-2 overflow-auto h-full';
-    cardContainer.id = `${title}-${id}`
+    cardContainer.id = `${title.replaceAll(" ", "-")}-${id}`
 
     column.appendChild(cardContainer);
 
-    return { column, cardContainer, addButton, deleteButton };
+    return { column, cardContainer, addButton, deleteButton, titleSpan, header };
 }

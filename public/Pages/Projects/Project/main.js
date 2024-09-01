@@ -1,5 +1,6 @@
 import { createCard } from "../../../components/card.js";
 import { createColumn } from "../../../components/column.js";
+import { createConfirmationModal } from "../../../components/confirmModal.js";
 import { createColumnButton } from "../../../components/createColumn.js";
 import { fetchSessionStatus } from "../../../data/auth.data.js";
 import { deleteCard, upsertCard } from "../../../data/cards.data.js";
@@ -20,36 +21,18 @@ try {
 }
 const $modal = document.querySelector('#modal-ticket')
 const $form = $modal.querySelector("#ticket-form")
-const $team = $modal.querySelectorAll("li")
 const $board = document.querySelector('#board-container')
 Sortable.create($board, { animation: 150, draggable: "[data-column-id]" })
 const $createColumn = createColumnButton()
 const stagesSelect = document.querySelector("[name='stage']")
 const addMemberBtn = document.getElementById('addMemberBtn');
 const $teamList = document.getElementById('teamList');
-const $listItem = document.createElement('li');
-$listItem.textContent = user.email;
-$teamList.appendChild($listItem);
 addMemberBtn.addEventListener('click', () => {
-    const $input = document.querySelector('input[name="teamMember"]');
+    const $input = document.querySelector('#teamMember');
     const email = $input.value.trim();
 
     if (email) {
-        const $listItem = document.createElement('li');
-        $listItem.textContent = email;
-
-        const removeBtn = document.createElement('button');
-        removeBtn.textContent = 'Remove';
-        removeBtn.className = 'ml-2 text-red-500';
-        removeBtn.type = 'button';
-
-        removeBtn.addEventListener('click', () => {
-            $listItem.remove();
-        });
-
-        $listItem.appendChild(removeBtn);
-        $teamList.appendChild(l$istItem);
-
+        $teamList.appendChild(createTeamItemElement({ email }, 0));
         $input.value = ''; // Clear the input field
     }
 });
@@ -57,19 +40,26 @@ addMemberBtn.addEventListener('click', () => {
 document.querySelector("#main").className += project.bgColor;
 document.querySelector("#board-title").textContent = project.title;
 
-$modal.addEventListener("close", (event) => { $form.reset() });
+
+$modal.addEventListener("close", (event) => {
+    $form.reset()
+    $teamList.innerHTML = ""
+});
+
 $form.addEventListener("submit", async (event) => {
     event.preventDefault()
+    const $team = $modal.querySelectorAll("li")
     const data = Object.fromEntries(new FormData(event.target))
     const currentColumn = project.scenes.find((column) => column.id == data.stage)
-    data.team = [...$team].map(li => ({ email: li.textContent }))
+    data.team = [...$team].map(li => ({ email: li.childNodes[0].textContent.trim() }))
     data.order = currentColumn.tickets.length
     const newCard = await upsertCard(data)
     const $column = document.querySelector(`[data-column-id="${currentColumn.id}"]`);
-    const $cardContainer = $column.querySelector(`#${currentColumn.title}-${currentColumn.id}`)
+    const $cardContainer = $column.querySelector(`#${currentColumn.title.replaceAll(" ", "-")}-${currentColumn.id}`)
     const $existingCard = document.querySelector(`[data-id="${newCard.id}"]`);
     const $newCard = createCardElement(newCard);
     if ($existingCard) {
+        console.log($cardContainer)
         $cardContainer.replaceChild($newCard, $existingCard);
         currentColumn.tickets.map((ticket) => {
             if (ticket.id == newCard.id) return newCard
@@ -117,12 +107,24 @@ function createColumnElement(column) {
     $column.deleteButton.addEventListener("click", async (evt) => {
         const currentColumn = project.scenes.find((column) => column.id == column.id)
         project.scenes = project.scenes.filter((_column) => _column.id != currentColumn.id)
-        try {
-            await deleteColumn(column.id)
-            $column.column.remove()
-        } catch (error) {
-            alert(`Error: ${error.message}`);
-        }
+        const $confirm = createConfirmationModal({
+            title: 'Confirm Action',
+            message: `Estas seguro de eliminar ${column.title} con ${column.tickets.length} tiquetes?`
+        });
+        $board.append($confirm.modal)
+        $confirm.modal.show()
+        $confirm.confirmButton.addEventListener("click", async () => {
+            try {
+                await deleteColumn(column.id)
+                $column.column.remove()
+            } catch (error) {
+                alert(`Error: ${error.message}`);
+            }
+
+        })
+        $confirm.cancelButton.addEventListener("click", async () => {
+            $confirm.modal.remove()
+        })
     })
 
     $column.addButton.addEventListener('click', () => {
@@ -130,13 +132,30 @@ function createColumnElement(column) {
         $modal.showModal()
     })
 
-
+    $column.titleSpan.addEventListener("dblclick", (e) => {
+        $column.titleSpan.contentEditable = true
+        $column.titleSpan.focus()
+    })
+    $column.titleSpan.addEventListener("blur", async (e) => {
+        $column.titleSpan.contentEditable = false
+        try {
+            await upsertColumn({ ...column, title: e.target.textContent })
+        } catch (error) {
+            $column.titleSpan.textContent = column.title
+            alert(error.message)
+        }
+    })
     const onDroppedCard = async (evt) => {
         const destinationColumn = project.scenes.find((_column) => _column.id == column.id)
         const sourceColumn = project.scenes.find((column) => column.tickets.find((card) => card.id == evt.item.dataset.id))
         const card = sourceColumn.tickets.find((card) => card.id == evt.item.dataset.id)
+        card.stage = destinationColumn.id
         try {
-            await upsertCard(card)
+            console.log(sourceColumn.id)
+            await upsertCard({
+                ...card,
+                stage: column.id
+            })
             sourceColumn.tickets = sourceColumn.tickets.filter((_card) => _card.id != card.id)
             destinationColumn.tickets = destinationColumn.tickets.concat(card)
         } catch (error) {
@@ -164,21 +183,31 @@ function createCardElement(card) {
             alert(error.message)
         }
     })
+    $card.btnEdit.addEventListener("click", () => {
+        $form.elements['id'].value = card.id;
+        $form.elements['title'].value = card.title;
+        $form.elements['label'].value = card.label.text;
+        $form.elements['stage'].value = card.stage;
+        $form.querySelector('#teamList').append(...card.team.map(createTeamItemElement));
+        $modal.showModal()
+    })
 
     return $card.card
 
 }
 
-
-
-
-// modal.querySelector("#ticket-form").addEventListener("submit", async (event) => {
-//     event.preventDefault()
-//     const tmp = { ...Object.fromEntries(new FormData(event.target)) }
-//     const currentColumn = project.scenes.find((column) => column.id == tmp.stage)
-//     const team = [...modal.querySelectorAll("li")].map(li => ({ avatar: li.textContent }))
-//     const card = await InsertCard({ ...tmp, team, order: currentColumn.cards.length })
-//     currentColumn.cards.push(card)
-//     cardContainer.append(populateCardData(card, () => onDeleteCard(card.id)))
-//     modal.close()
-// })
+function createTeamItemElement(team, isUser = -1) {
+    const $listItem = document.createElement('li');
+    $listItem.textContent = team.email;
+    if (isUser >= 0) {
+        const removeBtn = document.createElement('button');
+        removeBtn.textContent = 'Remove';
+        removeBtn.className = 'ml-2 text-red-500';
+        removeBtn.type = 'button';
+        removeBtn.addEventListener('click', () => {
+            $listItem.remove();
+        });
+        $listItem.appendChild(removeBtn);
+    }
+    return $listItem
+}

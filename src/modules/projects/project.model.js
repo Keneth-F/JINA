@@ -1,21 +1,4 @@
-const labels = [
-  {
-    text: "high",
-    bgColor: 'bg-error'
-  },
-  {
-    text: "medium",
-    bgColor: 'bg-warning'
-  },
-  {
-    text: "normal",
-    bgColor: 'bg-success'
-  },
-  {
-    text: "low",
-    bgColor: 'bg-info'
-  }]
-
+import { selectRandomLabel } from "../../utils/index.js";
 const projects = [
   {
     "id": "b1a2b3c4-d5e6-f7g8-h9i0-j1k2l3m4n5o6",
@@ -34,7 +17,7 @@ const projects = [
             "title": "Design Landing Page",
             "order": 1,
             "description": "Create a mockup for the landing page",
-            "label": labels[Math.floor(Math.random() * labels.length)],
+            "label": selectRandomLabel(),
             stage: "l1a2b3c4-d5e6-f7g8-h9i0-j1k2l3m4n5o6",
             "date": 'Dec 12',
             "comments": Math.floor(Math.random() * 10),
@@ -53,7 +36,7 @@ const projects = [
             "title": "Set up Database",
             "order": 2,
             "description": "Initialize the database schema and tables",
-            "label": labels[Math.floor(Math.random() * labels.length)],
+            "label": selectRandomLabel(),
             stage: "l1a2b3c4-d5e6-f7g8-h9i0-j1k2l3m4n5o6",
             "date": 'Dec 12',
             "comments": Math.floor(Math.random() * 10),
@@ -82,7 +65,7 @@ const projects = [
             "title": "Develop Authentication",
             "order": 1,
             "description": "Implement user authentication using JWT",
-            "label": labels[Math.floor(Math.random() * labels.length)],
+            "label": selectRandomLabel(),
             stage: "l2b3c4d5-e6f7-g8h9-i0j1-k2l3m4n5o6p7",
             "date": 'Dec 12',
             "comments": Math.floor(Math.random() * 10),
@@ -111,7 +94,7 @@ const projects = [
             "title": "Social Media Plan",
             "order": 1,
             "description": "Draft a social media strategy",
-            "label": labels[Math.floor(Math.random() * labels.length)],
+            "label": selectRandomLabel(),
             stage: "l2b3c4d5-e6f7-g8h9-i0j1-k2l3m4n5o6p7",
             "date": 'Dec 12',
             "comments": Math.floor(Math.random() * 10),
@@ -130,7 +113,7 @@ const projects = [
             "title": "Ad Campaign Concept",
             "order": 2,
             "description": "Brainstorm ideas for the new ad campaign",
-            "label": labels[Math.floor(Math.random() * labels.length)],
+            "label": selectRandomLabel(),
             stage: "l2b3c4d5-e6f7-g8h9-i0j1-k2l3m4n5o6p7",
             "date": 'Dec 12',
             "comments": Math.floor(Math.random() * 10),
@@ -159,7 +142,7 @@ const projects = [
             "title": "Launch Website",
             "order": 1,
             "description": "Deploy the marketing website",
-            "label": labels[Math.floor(Math.random() * labels.length)],
+            "label": selectRandomLabel(),
             stage: "l2b3c4d5-e6f7-g8h9-i0j1-k2l3m4n5o6p7",
             "date": 'Dec 12',
             "comments": Math.floor(Math.random() * 10),
@@ -188,7 +171,7 @@ const projects = [
             "title": "Final Review",
             "order": 1,
             "description": "Conduct a final review of the project",
-            "label": labels[Math.floor(Math.random() * labels.length)],
+            "label": selectRandomLabel(),
             stage: "l5e6f7g8-h9i0-j1k2-l3m4-n5o6p7q8r9s0",
             "date": 'Dec 12',
             "comments": Math.floor(Math.random() * 10),
@@ -227,7 +210,7 @@ const projects = [
             "title": "Social Media Plan",
             "order": 1,
             "description": "Draft a social media strategy",
-            "label": labels[Math.floor(Math.random() * labels.length)],
+            "label": selectRandomLabel(),
             stage: "b2c3d4e5-f6g7-h8i9-j0k1-l2m3n4o5p6q7",
             "date": 'Dec 12',
             "comments": Math.floor(Math.random() * 10),
@@ -246,7 +229,7 @@ const projects = [
             "title": "Ad Campaign Concept",
             "order": 2,
             "description": "Brainstorm ideas for the new ad campaign",
-            "label": labels[Math.floor(Math.random() * labels.length)],
+            "label": selectRandomLabel(),
             stage: "b2c3d4e5-f6g7-h8i9-j0k1-l2m3n4o5p6q7",
             "date": 'Dec 12',
             "comments": Math.floor(Math.random() * 10),
@@ -272,7 +255,7 @@ const projects = [
             "title": "Launch Website",
             "order": 1,
             "description": "Deploy the marketing website",
-            "label": labels[Math.floor(Math.random() * labels.length)],
+            "label": selectRandomLabel(),
             stage: "l4d5e6f7-g8h9-i0j1-k2l3-m4n5o6p7q8r9",
             "date": 'Dec 12',
             "comments": Math.floor(Math.random() * 10),

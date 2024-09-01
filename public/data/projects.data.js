@@ -18,8 +18,8 @@ export async function fetchProjects() {
 
 export const upsertProject = async (data) => {
   try {
-    const method = data.id >= 0 ? 'PUT' : 'POST';
-    const endpoint = data.id >= 0 ? `/project/${data.id}` : '/project/';
+    const method = data.id != -1 ? 'PUT' : 'POST';
+    const endpoint = data.id != -1 ? `/project/${data.id}` : '/project/';
     const response = await fetch(endpoint, {
       method: method,
       credentials: 'include',

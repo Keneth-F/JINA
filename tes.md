@@ -6,6 +6,8 @@ TODO refresh token
 TODO inmutable
 TODO change alerts
 TODO validar
+TODO default user card/ticket
+TODO modal como confirm, mejorar lo de botones
 
 export const productiveList = [
 {

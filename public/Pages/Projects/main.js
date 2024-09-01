@@ -1,3 +1,4 @@
+import { createConfirmationModal } from "../../components/confirmModal.js";
 import { createProjectCard } from "../../components/projectCard.js";
 import { fetchSessionStatus, logoutUser } from "../../data/auth.data.js";
 import { deleteProject, fetchProjects, upsertProject } from "../../data/projects.data.js";
@@ -76,6 +77,24 @@ function createProjectCardElement(project) {
     $modal.showModal()
   })
   $project.deleteButton.addEventListener("click", async (event) => {
+    const $confirm = createConfirmationModal({
+      title: 'Confirm Action',
+      message: `Estas seguro de eliminar ${project.title} con ${project.column.length} scenes y ${project.column.reduce((acc, c) => acc + c.tickets, 0)}?`
+    });
+    $board.append($confirm.modal)
+    $confirm.modal.show()
+    $confirm.confirmButton.addEventListener("click", async () => {
+      try {
+        await deleteColumn(column.id)
+        $column.column.remove()
+      } catch (error) {
+        alert(`Error: ${error.message}`);
+      }
+
+    })
+    $confirm.cancelButton.addEventListener("click", async () => {
+      $confirm.modal.remove()
+    })
     try {
       await deleteProject(project.id)
       $project.box.remove()

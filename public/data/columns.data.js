@@ -1,7 +1,7 @@
 export const upsertColumn = async (data) => {
   try {
-    const method = id >= 0 ? 'PUT' : 'POST';
-    const url = id >= 0 ? `/scene/${id}` : '/scene/';
+    const method = data.id != -1 ? 'PUT' : 'POST';
+    const url = data.id != -1 ? `/scene/${data.id}` : '/scene/';
 
     const response = await fetch(url, {
       method,

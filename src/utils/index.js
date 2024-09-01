@@ -10,7 +10,8 @@ export async function createAccessToken(payload) {
   });
 }
 
-export const selectedLabel = (text) => [
+
+const labels = [
   {
     text: "high",
     bgColor: 'bg-error'
@@ -26,4 +27,6 @@ export const selectedLabel = (text) => [
   {
     text: "low",
     bgColor: 'bg-info'
-  }].find((lbl) => lbl.text = text)
+  }]
+export const selectedLabel = (text) => labels.find((lbl) => lbl.text = text)
+export const selectRandomLabel = () => labels[Math.floor(Math.random() * labels.length)]
