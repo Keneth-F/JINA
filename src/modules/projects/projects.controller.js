@@ -19,7 +19,7 @@ const _delete = ({ params, user }, res, next) => Project
   .then((data) => res.json({ data }))
   .catch(({ message, status }) => next({ message, status }))
 
-const update = ({ params: { id }, body: data, user }, res, next) => Project
+const update = ({ params: { id }, body: { ...data }, user }, res, next) => Project
   .update({ id, data, user })
   .then((data) => res.json({ data }))
   .catch(({ message, status }) => next({ message, status }))

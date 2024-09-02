@@ -1,26 +1,30 @@
-const users = [{ email: 'test@example.us' }]
+import db from "../db/index.js";
 
 export class User {
     static async signUp({ email }) {
-        const user = users.find(user => user?.email == email)
-        if (user)
+        const [exist] = await db.query(`
+            SELECT * FROM users WHERE email = ?;
+            `, [email]);
+        if (exist.length > 0)
             throw { status: 400, message: "The email is already in use" }
-        users.push({ email })
-        return Promise.resolve({ email })
+        const [results] = await db.query(`
+            INSERT INTO users (email) VALUES (?);
+        `, [email]);
+        if (results.affectedRows < 0)
+            throw { message: "Error interno del servidor" }
+        return { email }
     }
+
     static async signIn({ email }) {
-
-        const user = users.find(user => user.email == email)
-        console.log(users, user, email)
-        if (!user)
+        const [results] = await db.query(`
+            SELECT * FROM users WHERE email = ?;
+        `, [email]);
+        if (results.length != 1)
             throw { status: 400, message: "The email does not exist" }
-        return Promise.resolve({ email })
-    };
-    static async signOut({ email }) {
-        const userIndex = users.findIndex(user => user.email == email)
-        if (userIndex != -1)
-            users.splice(userIndex, 1)
-        return Promise.resolve(null)
-    };
+        return results[0]
+    }
 
+    static async signOut({ email }) {
+        return Promise.resolve(null)
+    }
 }

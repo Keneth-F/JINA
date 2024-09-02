@@ -18,52 +18,34 @@ export async function fetchSessionStatus() {
 }
 
 export async function loginRequest(email, password) {
-  try {
-    const response = await fetch('/auth/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ email, password })
-    });
+  const response = await fetch('/auth/login', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ email, password })
+  });
 
-    if (!response.ok) throw await response.json()
-
-  } catch (error) {
-    console.error('Error durante la solicitud de inicio de sesión:', error);
-    throw new Error('An error occurred during login request.');
-  }
+  if (!response.ok) throw await response.json()
 }
 
 export async function registerRequest(email, password) {
-  try {
-    const response = await fetch('/auth/register', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ email, password })
-    });
+  const response = await fetch('/auth/register', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ email, password })
+  });
 
-    if (!response.ok) throw await response.json()
-
-  } catch (error) {
-    console.error('Error durante la solicitud de registro:', error);
-    throw new Error('An error occurred during registration request.');
-  }
+  if (!response.ok) throw await response.json()
 }
 
 export async function logoutUser() {
-  try {
-    const response = await fetch('/auth/logout', {
-      method: 'POST',
-      credentials: 'include'
-    });
+  const response = await fetch('/auth/logout', {
+    method: 'POST',
+    credentials: 'include'
+  });
 
-    if (!response.ok) throw await response.json()
-
-  } catch (error) {
-    console.error('Error durante la solicitud de inicio de sesión:', error);
-    throw new Error('An error occurred during logout request.');
-  }
+  if (!response.ok) throw await response.json()
 }

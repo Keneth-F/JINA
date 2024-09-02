@@ -1,13 +1,24 @@
-TODO projects add at the end
-TODO check exist htmlelement
-TODO try catch para todo
-TODO add date auto
-TODO refresh token
-TODO inmutable
-TODO change alerts
 TODO validar
+TODO interfaz
+TODO loader
+TODO dark mode
+TODO magic link
+TODO docs
+TODO reportes
+TODO 404
+TODO español
+TODO rutas
+TODO animations
+TODO order
+TODO try catch para todo
+TODO change alerts
+TODO add date auto
+TODO check exist htmlelement
+TODO refresh token
 TODO default user card/ticket
+TODO projects add at the end
 TODO modal como confirm, mejorar lo de botones
+TODO inmutable
 
 export const productiveList = [
 {

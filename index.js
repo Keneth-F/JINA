@@ -14,7 +14,6 @@ import { auth } from "./src/middlewares/index.js";
 const app = express()
 const port = PORT;
 app.use(cookieParser());
-
 app.use(express.static("public"))
 app.use(express.json())
 

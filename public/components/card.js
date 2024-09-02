@@ -13,7 +13,7 @@ function createTeamAvatars(team) {
         placeholderInnerDiv.className = 'bg-neutral text-neutral-content size-6';
 
         const span = document.createElement('span');
-        span.textContent = member.email.slice(-12, -10);
+        span.textContent = member.email.slice(0, 2);
 
         placeholderInnerDiv.appendChild(span);
         placeholderDiv.appendChild(placeholderInnerDiv);

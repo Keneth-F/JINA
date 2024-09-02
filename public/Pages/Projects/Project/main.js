@@ -43,6 +43,7 @@ document.querySelector("#board-title").textContent = project.title;
 
 $modal.addEventListener("close", (event) => {
     $form.reset()
+    $form.elements["id"].value = "-1"
     $teamList.innerHTML = ""
 });
 
@@ -50,16 +51,16 @@ $form.addEventListener("submit", async (event) => {
     event.preventDefault()
     const $team = $modal.querySelectorAll("li")
     const data = Object.fromEntries(new FormData(event.target))
-    const currentColumn = project.scenes.find((column) => column.id == data.stage)
+    const currentColumn = project.stages.find((column) => column.id == data.stage)
     data.team = [...$team].map(li => ({ email: li.childNodes[0].textContent.trim() }))
     data.order = currentColumn.tickets.length
     const newCard = await upsertCard(data)
     const $column = document.querySelector(`[data-column-id="${currentColumn.id}"]`);
     const $cardContainer = $column.querySelector(`#${currentColumn.title.replaceAll(" ", "-")}-${currentColumn.id}`)
     const $existingCard = document.querySelector(`[data-id="${newCard.id}"]`);
+    console.log(newCard.team)
     const $newCard = createCardElement(newCard);
     if ($existingCard) {
-        console.log($cardContainer)
         $cardContainer.replaceChild($newCard, $existingCard);
         currentColumn.tickets.map((ticket) => {
             if (ticket.id == newCard.id) return newCard
@@ -82,9 +83,9 @@ $createColumn.button.addEventListener("click", (event) => {
     $board.insertBefore($inputContainer, $createColumn.container);
     $input.focus();
     $input.addEventListener('blur', async (e) => {
-        const column = await upsertColumn({ title: $input.value, order: project.scenes.length, id: -1 })
+        const column = await upsertColumn({ title: $input.value, order: project.stages.length, id: -1, project: project.id })
         const $column = createColumnElement(column)
-        project.scenes.push(column)
+        project.stages.push(column)
         $board.insertBefore($column, $createColumn.container)
         $inputContainer.remove()
     });
@@ -94,7 +95,7 @@ $createColumn.button.addEventListener("click", (event) => {
         }
     });
 })
-$board.append(...project.scenes.sort((a, b) => a.order - b.order).map(createColumnElement))
+$board.append(...project.stages.sort((a, b) => a.order - b.order).map(createColumnElement))
 $board.append($createColumn.container)
 
 function createColumnElement(column) {
@@ -105,8 +106,8 @@ function createColumnElement(column) {
 
     const $column = createColumn(column)
     $column.deleteButton.addEventListener("click", async (evt) => {
-        const currentColumn = project.scenes.find((column) => column.id == column.id)
-        project.scenes = project.scenes.filter((_column) => _column.id != currentColumn.id)
+        const currentColumn = project.stages.find((column) => column.id == column.id)
+        project.stages = project.stages.filter((_column) => _column.id != currentColumn.id)
         const $confirm = createConfirmationModal({
             title: 'Confirm Action',
             message: `Estas seguro de eliminar ${column.title} con ${column.tickets.length} tiquetes?`
@@ -146,8 +147,8 @@ function createColumnElement(column) {
         }
     })
     const onDroppedCard = async (evt) => {
-        const destinationColumn = project.scenes.find((_column) => _column.id == column.id)
-        const sourceColumn = project.scenes.find((column) => column.tickets.find((card) => card.id == evt.item.dataset.id))
+        const destinationColumn = project.stages.find((_column) => _column.id == column.id)
+        const sourceColumn = project.stages.find((column) => column.tickets.find((card) => card.id == evt.item.dataset.id))
         const card = sourceColumn.tickets.find((card) => card.id == evt.item.dataset.id)
         card.stage = destinationColumn.id
         try {
@@ -176,7 +177,7 @@ function createCardElement(card) {
     $card.btnDelete.addEventListener("click", async (e) => {
         try {
             await deleteCard(card.id)
-            const sourceColumn = project.scenes.find((column) => column.tickets.find((_card) => _card.id == card.id))
+            const sourceColumn = project.stages.find((column) => column.tickets.find((_card) => _card.id == card.id))
             sourceColumn.tickets = sourceColumn.tickets.filter((_card) => _card.id != card.id)
             $card.card.remove()
         } catch (error) {

@@ -1,5 +1,6 @@
 import { createConfirmationModal } from "../../components/confirmModal.js";
 import { createProjectCard } from "../../components/projectCard.js";
+import { createTextConfirmationModal } from "../../components/textConfirmationModal.js";
 import { fetchSessionStatus, logoutUser } from "../../data/auth.data.js";
 import { deleteProject, fetchProjects, upsertProject } from "../../data/projects.data.js";
 
@@ -77,30 +78,49 @@ function createProjectCardElement(project) {
     $modal.showModal()
   })
   $project.deleteButton.addEventListener("click", async (event) => {
+    //TODO  message: `Estas seguro de eliminar ${project.title} con ${project.stages?.length} stages y ${project.stages.reduce((acc, c) => acc + c.tickets?.length, 0)} tiquetes?`
     const $confirm = createConfirmationModal({
       title: 'Confirm Action',
-      message: `Estas seguro de eliminar ${project.title} con ${project.column.length} scenes y ${project.column.reduce((acc, c) => acc + c.tickets, 0)}?`
+      message: `Estas seguro de eliminar ${project.title}?`
     });
-    $board.append($confirm.modal)
+    $projectsContainer.append($confirm.modal)
     $confirm.modal.show()
-    $confirm.confirmButton.addEventListener("click", async () => {
-      try {
-        await deleteColumn(column.id)
-        $column.column.remove()
-      } catch (error) {
-        alert(`Error: ${error.message}`);
-      }
+    $confirm.confirmButton.addEventListener("click", () => {
+
+
+
+
+      const $textModal = createTextConfirmationModal({
+        title: 'Confirm Deletion',
+        message: `Please type "${project.title}" to confirm that you want to delete this item.`,
+        requiredText: project.title
+      });
+      $projectsContainer.append($textModal.modal)
+      $textModal.modal.show()
+      $textModal.inputField.addEventListener('input', () => {
+        $textModal.confirmButton.disabled = $textModal.inputField.value !== project.title;
+      });
+      $textModal.confirmButton.addEventListener("click", async () => {
+        if ($textModal.inputField.value === project.title) {
+          try {
+            await deleteProject(project.id)
+            $project.box.remove()
+          } catch (error) {
+            alert(`Error: ${error.message}`);
+          }
+        }
+
+      })
+
+      $textModal.cancelButton.addEventListener("click", async () => {
+        $textModal.modal.remove()
+      })
 
     })
     $confirm.cancelButton.addEventListener("click", async () => {
       $confirm.modal.remove()
     })
-    try {
-      await deleteProject(project.id)
-      $project.box.remove()
-    } catch (error) {
-      alert(`Error: ${error.message}`);
-    }
+
   })
   return $project.box
 }

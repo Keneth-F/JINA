@@ -28,5 +28,5 @@ const labels = [
     text: "low",
     bgColor: 'bg-info'
   }]
-export const selectedLabel = (text) => labels.find((lbl) => lbl.text = text)
+export const selectedLabel = (text) => labels.find((lbl) => lbl.text == text) ?? labels[0]
 export const selectRandomLabel = () => labels[Math.floor(Math.random() * labels.length)]

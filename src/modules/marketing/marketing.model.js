@@ -2,7 +2,7 @@ import fs from 'fs'
 import { Client } from 'whatsapp-web.js'
 import { image as imageQr } from "qr-image";
 import nodemailer from 'nodemailer'
-import { EMAIL, EMAIL_APP_PASS, EMAIL_SERVICE } from '../../config';
+import { EMAIL, EMAIL_APP_PASS, EMAIL_SERVICE } from '../../config/index.js';
 const transporter = nodemailer.createTransport({
   service: EMAIL_SERVICE,
   auth: {
@@ -11,18 +11,12 @@ const transporter = nodemailer.createTransport({
   }
 })
 
-const client = new Client(
-  {
-    authStrategy: new LocalAuth()
-  }
-);
+const client = new Client();
 client.once('ready', () => {
   console.log('Client is ready!');
-  fetch('localhost:3000/send-message', {
+  fetch('http://localhost:3000/send-message', {
     method: 'POST',
     headers: {
-      Accept: '*/*',
-      'User-Agent': 'Thunder Client (https://www.thunderclient.com)',
       'Content-Type': 'application/json'
     },
     body: `{"phone":${MESSAGE_CALLBACK_NUMBER},"message":"\'tamos ready"}`
@@ -32,13 +26,13 @@ client.once('ready', () => {
     .catch(err => console.error('error:' + err));
 });
 client.on('qr', (qr) => {
-  console.log('QR RECEIVED', qr);
+  console.log('QR RECEIVED');
   const path = `${process.cwd()}/public`;
   let qr_svg = imageQr(qr, { type: "svg", margin: 4 });
   qr_svg.pipe(fs.createWriteStream(`${path}/qr.svg`));
 });
 client.on('message_create', message => {
-  console.log(message);
+  console.log(message.body);
 });
 client.initialize();
 const marketings = []
@@ -56,7 +50,6 @@ export class Marketing {
   static async createMessage(data) {
     const { message, phone } = data;
     const response = await client.sendMessage(`${phone}@c.us`, message);
-    console.log({ response })
     const marketing = {
       ...data,
       id: marketings.length,
