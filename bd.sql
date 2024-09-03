@@ -40,6 +40,5 @@ CREATE TABLE ticket_team (
     ticket_id INT,
     team_member_email VARCHAR(255),
     PRIMARY KEY (ticket_id, team_member_email),
-    FOREIGN KEY (ticket_id) REFERENCES tickets (id) ON DELETE CASCADE,
-    FOREIGN KEY (team_member_email) REFERENCES users (email) ON DELETE CASCADE
+    FOREIGN KEY (ticket_id) REFERENCES tickets (id) ON DELETE CASCADE
 );

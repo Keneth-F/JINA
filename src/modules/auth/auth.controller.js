@@ -30,7 +30,12 @@ export const login = ({ body }, res, next) => User
   )
   .catch(({ message, status }) => next({ message, status }))
 
-export const verifyToken = (req, res) => res.json(req.user)
+export const verifyToken = ({ user }, res, next) => User
+  .verifyUser(user)
+  .then(() =>
+    res.json(user)
+  )
+  .catch(({ message, status }) => next({ message, status }))
 
 export const logout = ({ body, user }, res, next) => User
   .signOut(user)
