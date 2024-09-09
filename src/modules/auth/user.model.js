@@ -1,4 +1,4 @@
-import db from "../db/index.js";
+import db from "../db/mysql/index.js";
 
 export class User {
     static async signUp({ email }) {
@@ -16,6 +16,16 @@ export class User {
     }
 
     static async signIn({ email }) {
+        const [results] = await db.query(`
+            SELECT * FROM users WHERE email = ?;
+        `, [email]);
+        if (results.length != 1)
+            throw { status: 400, message: "The email does not exist" }
+        console.log(results)
+        return results[0]
+    }
+
+    static async verifyUser({ email }) {
         const [results] = await db.query(`
             SELECT * FROM users WHERE email = ?;
         `, [email]);
