@@ -13,11 +13,12 @@ if (!isAuthenticated) {
     window.location.assign('/pages/sign-in');
 }
 const projectId = new URLSearchParams(location.search).get("id");
-const project = await getProjectById(projectId)
+let project
 try {
+    project = await getProjectById(projectId)
 
 } catch (error) {
-    alert(`Error: ${error.message}`);
+    window.location.assign('/');
 }
 const $modal = document.querySelector('#modal-ticket')
 const $form = $modal.querySelector("#ticket-form")
