@@ -21,7 +21,6 @@ export class User {
         `, [email]);
         if (results.length != 1)
             throw { status: 400, message: "The email does not exist" }
-        console.log(results)
         return results[0]
     }
 
@@ -31,7 +30,6 @@ export class User {
         `, [email]);
         if (results.length != 1)
             throw { status: 400, message: "The email does not exist" }
-        console.log(results)
         return results[0]
     }
 

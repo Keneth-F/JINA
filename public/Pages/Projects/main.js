@@ -4,15 +4,12 @@ import { createTextConfirmationModal } from "../../components/textConfirmationMo
 import { fetchSessionStatus, logoutUser } from "../../data/auth.data.js";
 import { deleteProject, fetchProjects, upsertProject } from "../../data/projects.data.js";
 
-try {
-  const { isAuthenticated, message } = await fetchSessionStatus();
-
+fetchSessionStatus().then(({ isAuthenticated, message }) => {
   if (!isAuthenticated) {
     window.location.assign('/pages/sign-in');
   }
-} catch (error) {
-  alert(`Error: ${error.message}`);
-}
+}).catch(({ message }) => alert(`Error: ${message}`))
+
 
 const $modal = document.querySelector('#modal-project')
 const $form = $modal.querySelector("#project-form")
@@ -86,10 +83,6 @@ function createProjectCardElement(project) {
     $projectsContainer.append($confirm.modal)
     $confirm.modal.show()
     $confirm.confirmButton.addEventListener("click", () => {
-
-
-
-
       const $textModal = createTextConfirmationModal({
         title: 'Confirm Deletion',
         message: `Please type "${project.title}" to confirm that you want to delete this item.`,
@@ -109,7 +102,6 @@ function createProjectCardElement(project) {
             alert(`Error: ${error.message}`);
           }
         }
-
       })
 
       $textModal.cancelButton.addEventListener("click", async () => {

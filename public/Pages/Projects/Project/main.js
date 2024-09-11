@@ -7,18 +7,15 @@ import { deleteCard, upsertCard } from "../../../data/cards.data.js";
 import { deleteColumn, upsertColumn } from "../../../data/columns.data.js";
 import { getProjectById } from "../../../data/projects.data.js"
 
-const { isAuthenticated, message } = await fetchSessionStatus()
+const { isAuthenticated, message } = await fetchSessionStatus().catch(({ message }) => alert(`Error: ${message}`))
 const user = JSON.parse(message)
 if (!isAuthenticated) {
     window.location.assign('/pages/sign-in');
 }
-const projectId = new URLSearchParams(location.search).get("id");
-const project = await getProjectById(projectId)
-try {
 
-} catch (error) {
-    alert(`Error: ${error.message}`);
-}
+const projectId = new URLSearchParams(location.search).get("id");
+const project = await getProjectById(projectId).catch(({ message }) => alert(`Error: ${message}`))
+
 const $modal = document.querySelector('#modal-ticket')
 const $form = $modal.querySelector("#ticket-form")
 const $board = document.querySelector('#board-container')
@@ -27,13 +24,14 @@ const $createColumn = createColumnButton()
 const stagesSelect = document.querySelector("[name='stage']")
 const addMemberBtn = document.getElementById('addMemberBtn');
 const $teamList = document.getElementById('teamList');
+
 addMemberBtn.addEventListener('click', () => {
     const $input = document.querySelector('#teamMember');
     const email = $input.value.trim();
 
     if (email) {
         $teamList.appendChild(createTeamItemElement({ email }, 0));
-        $input.value = ''; // Clear the input field
+        $input.value = '';
     }
 });
 
@@ -58,7 +56,7 @@ $form.addEventListener("submit", async (event) => {
     const $column = document.querySelector(`[data-column-id="${currentColumn.id}"]`);
     const $cardContainer = $column.querySelector(`#${currentColumn.title.replaceAll(" ", "-")}-${currentColumn.id}`)
     const $existingCard = document.querySelector(`[data-id="${newCard.id}"]`);
-    console.log(newCard.team)
+
     const $newCard = createCardElement(newCard);
     if ($existingCard) {
         $cardContainer.replaceChild($newCard, $existingCard);

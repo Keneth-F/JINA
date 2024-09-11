@@ -46,7 +46,6 @@ export class Ticket {
     const [results] = await db.query(`
       UPDATE tickets SET title = ?, \`order\` = ?, label = ?, stage = ? WHERE id = ?;
     `, [title, order, label, stage, id]);
-    console.log({ label, results, selectedLabel: selectedLabel(label) })
     return {
       id,
       order,
