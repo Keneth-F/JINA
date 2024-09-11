@@ -68,7 +68,7 @@ export class Marketing {
       id: marketings.length,
     }
     marketings.push(marketing)
-    return marketing
+    return data
   }
   static async delete({ id }) {
     const marketingIndex = marketings.findIndex(marketing => marketing.id == id)
