@@ -19,6 +19,8 @@ TODO default user card/ticket
 TODO projects add at the end
 TODO modal como confirm, mejorar lo de botones
 TODO inmutable
+TODO to github issues
+TODO toggle design table/list
 
 export const productiveList = [
 {
@@ -73,8 +75,8 @@ color: "bg-[#f99cdb]",
 
 https://blog.logrocket.com/best-html-pdf-libraries-node-js/
 
-Puppeteer,jsPDF,PDFKit
-PDF generation, Generates PDFs from HTML and web page content,Generates PDFs from HTML and SVG content,Creates PDFs from scratch
-File size,No control over PDF size,No control over PDF size,Provides control over PDF file size
-Browser integration,Provides headless Chrome integration for web page rendering,No browser integration,No browser integration
-Community support and update,Active community support and updates,Active community support and updates,Active community support and updates
+                            Puppeteer,                                                  jsPDF,                                    PDFKit
+PDF generation,              Generates PDFs from HTML and web page content,              Generates PDFs from HTML and SVG content,Creates PDFs from scratch
+File size,                   No control over PDF size,                                   No control over PDF size,                Provides control over PDF file size
+Browser integration,         Provides headless Chrome integration for web page rendering,No browser integration,                  No browser integration
+Community support and update,Active community support and updates,                       Active community support and updates,    Active community support and updates
